@@ -6,9 +6,11 @@ import SignUp from '../Sreens/signUp'
 import { AntDesign } from '@expo/vector-icons';
 import SignIn from '../Sreens/signIn'
 import Main from '../Sreens/Main'
-import Choi from '../Sreens/Choi';
+import Cart from '../Sreens/Cart';
 import HomeTabNavigator from './HomeTabNavigator'
 import CategoryScreen from '../Sreens/Vegetable';
+import Login from '../Sreens/Login';
+
 
 const Stack = createStackNavigator()
 
@@ -16,6 +18,13 @@ const Router = () => {
     return (
         <NavigationContainer>
             < Stack.Navigator>
+            <Stack.Screen
+                    name={"Login"}
+                    component={Login}
+                    options={{
+                        headerShown: false
+                    }}
+                />
                 
                   <Stack.Screen
                     name={'HomeTabNavigator'}
@@ -36,6 +45,7 @@ const Router = () => {
                     name={"sign in"}
                     component={SignIn}
                 />
+              
 
                 <Stack.Screen
                     name={"main"}
@@ -53,8 +63,8 @@ const Router = () => {
                     }}
                 />
                      <Stack.Screen
-                    name={"Choi"}
-                    component={Choi}
+                    name={"Cart"}
+                    component={Cart}
                     options={{
                         headerShown: false
                     }}

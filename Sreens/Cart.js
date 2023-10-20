@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { Ionicons, Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const Choi = ({ route }) => {
+const Cart = ({ route }) => {
+
   const { item } = route.params;
   const [quantity, setQuantity] = useState(1);
 
@@ -16,7 +18,8 @@ const Choi = ({ route }) => {
       setQuantity(quantity - 1);
     }
   };
-
+const navigation=useNavigation()
+console.log (item)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -34,26 +37,28 @@ const Choi = ({ route }) => {
         <Text style={styles.price}>$ {item.price}</Text>
       </View>
       <Text style={styles.description}>{item.description}</Text>
+      <View style={{flexDirection:'row',alignContent:'space-between'}}>
       <Text style={styles.label}>How many do you want?</Text>
       <View style={styles.quantityContainer}>
         <TouchableOpacity onPress={handleDecrement} style={styles.quantityButton}>
-          <MaterialCommunityIcons name="minus" size={24} color="green" />
+          <MaterialCommunityIcons name="minus" size={18} color="green" />
         </TouchableOpacity>
         <Text style={styles.quantityText}>{quantity}</Text>
         <TouchableOpacity onPress={handleIncrement} style={styles.quantityButton}>
-          <MaterialCommunityIcons name="plus" size={24} color="black" />
+          <MaterialCommunityIcons name="plus" size={18} color="black" />
         </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.addToCart}>
         <TouchableOpacity style={styles.addToCartButton}>
-          <Text style={styles.addToCartText}>Add To Cart</Text>
+          <Text style={styles.addToCartText}onPress={() => navigation.navigate('CartScreen', {item:item})}>Add To Cart</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default Choi;
+export default Cart;
 
 const styles = StyleSheet.create({
   container: {
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 250,
-    height: 180,
+    height: 230,
     borderRadius: 75,
   },
   icon: {
@@ -108,10 +113,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    marginLeft:34
   },
   quantityButton: {
     backgroundColor: '#E0E0E0',
-    padding: 10,
+    padding: 3,
     borderRadius: 5,
   },
   quantityText: {
@@ -128,7 +134,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     width:'100%',
-    marginTop:78
+    marginTop:100
     
   },
   addToCartText: {
