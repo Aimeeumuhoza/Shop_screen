@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet,SafeAreaView } from "react-native";
+import { View, Text, Image, StyleSheet, SafeAreaView } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 import Router from "./Navigation/Route";
-import Vg from "./Sreens/Vg";
+import UserProfile from "./Sreens/Profile"
+import { Provider } from "react-redux";
+import Store from "./Redux/store";
+import Payment from "./Sreens/Payment"
+import CategoriesComponent from "./Sreens/Get"
 
 const slides = [
   {
@@ -43,15 +47,18 @@ const App = () => {
 
   const bottomButton = () => {
     return (
-      <View style = {styles.bottomButtonContainer}>
-        <Text style = {styles.bottomButtonText}>Next</Text>
+      <View style={styles.bottomButtonContainer}>
+        <Text style={styles.bottomButtonText}>Next</Text>
       </View>
     );
   };
 
   return showRealApp ? (
     <>
-      <Router />
+      <Provider store={Store}>
+        <Router />
+        {/* <CategoriesComponent/> */}
+      </Provider>
     </>
   ) : (
     <AppIntroSlider
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   bottomButtonContainer: {
-   width: 40,
+    width: 40,
     height: 40,
     backgroundColor: 'rgba(0, 0, 0, .2)',
     borderRadius: 20,

@@ -2,16 +2,27 @@ import React ,{useState}from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import {  Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { setItemAsync } from 'expo-secure-store';
 import { AntDesign } from '@expo/vector-icons';
+// import { setAuthProfile, setAuthStatus } from '../Redux/AuthSlice';
+import axios from "axios";
+import { useDispatch } from 'react-redux'; 
+ import {setAuthStatus, setAuthProfile, setAuthToken,setI } from '../Redux/AuthSlice';
+
+
 
 const { width } = Dimensions.get("screen")
 
+
+
 export default function Login() {
 
+    const dispatch = useDispatch()
     const [email,setEmail]=useState("")
     const [password, setPassword]=useState("")
     const [error, setError]=useState('')
     const [hidePassword,setHidePassword]=useState(true)
+    const [isLoading, setIsLoading] = useState(false);
 
     const passwordVisibility = () => {
         setHidePassword(!hidePassword);
@@ -43,8 +54,35 @@ export default function Login() {
         setError(errors);
         return Object.keys(errors).length === 0;
     };
+    const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
 
 
+     const handleLogin=async()=>{
+   
+    axios.post(`${API_BASE_URL}/auth/login`, {
+        email: email,
+        password: password,
+      })
+
+    .then((response)=>{
+        console.log(response,'response'),
+        setIsLoading(false);
+        dispatch(setAuthProfile(response.data.user));
+        dispatch(setAuthToken(response.data.access._token));
+        dispatch(setAuthStatus(true));
+        setItemAsync("authToken",response.data.access._token)
+        setItemAsync("authProfile",JSON.stringify(response.data.user))
+        setIsLoading(false);
+        alert(response.data.message);
+
+    })
+.catch((error)=>{
+    setIsLoading(false);
+    console.log(error,"error");
+    alert(error.response.data.message);
+});
+
+}
 
     const navigation = useNavigation()
     return (
@@ -86,9 +124,12 @@ export default function Login() {
                 }
 
             </View>
-            <TouchableOpacity style={styles.button} onPress={onSubmit}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}> Login</Text>
             </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.button} onPress={onSubmit}>
+                <Text style={styles.buttonText}> Login</Text>
+            </TouchableOpacity> */}
             <Text style={{ textAlign: 'center', padding: 10 }} onPress={() => navigation.navigate("sign up")}>You don't have an account? create One </Text>
         </View>
     );

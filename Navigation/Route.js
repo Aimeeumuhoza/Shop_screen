@@ -8,8 +8,16 @@ import SignIn from '../Sreens/signIn'
 import Main from '../Sreens/Main'
 import Cart from '../Sreens/Cart';
 import HomeTabNavigator from './HomeTabNavigator'
-import CategoryScreen from '../Sreens/Vegetable';
+import CartScreen from '../Sreens/CartScreen';
 import Login from '../Sreens/Login';
+import ProductScreen from '../Sreens/ProductScreen'
+import CategoryScreen from '../Sreens/Vegetable'
+
+
+
+
+
+
 
 
 const Stack = createStackNavigator()
@@ -42,8 +50,8 @@ const Router = () => {
                     }}
                 />
                 <Stack.Screen
-                    name={"sign in"}
-                    component={SignIn}
+                    name={"CategoryScreen"}
+                    component={CategoryScreen}
                 />
               
 
@@ -56,10 +64,10 @@ const Router = () => {
                 />
                 
                 <Stack.Screen
-                    name={"CategoryScreen"}
-                    component={CategoryScreen}
+                    name={"CartScreen"}
+                    component={CartScreen}
                     options={{
-                        headerShown: false
+                        headerShown: true
                     }}
                 />
                      <Stack.Screen

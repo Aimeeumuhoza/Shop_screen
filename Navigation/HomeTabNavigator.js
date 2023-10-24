@@ -5,8 +5,11 @@ import SignIn from '../Sreens/signIn';
 import SignUp from '../Sreens/signUp';
 import Login from '../Sreens/Login';
 import Cart from '../Sreens/Cart';
-import Landing  from "../Sreens/Landing"
+
 import CategoryScreen from "../Sreens/Vegetable"
+import CartScreen from "../Sreens/CartScreen"
+import UserProfile from "../Sreens/Profile"
+import Payment from "../Sreens/Payment"
 
 const Tab = createBottomTabNavigator()
 const HomeTabNavigator = () => {
@@ -40,8 +43,8 @@ const HomeTabNavigator = () => {
                 }}
             />
             <Tab.Screen 
-                name="SignIn"
-                component={SignIn}
+                name="CartScreen"
+                component={CartScreen}
                 options={{
                     tabBarIcon:({color})=>(
                         <FontAwesome name="shopping-bag" size={24} color={color} />
@@ -50,8 +53,18 @@ const HomeTabNavigator = () => {
                 }}
             />
              <Tab.Screen 
-                name="Login"
-                component={Login}
+                name="UserProfile"
+                component={UserProfile}
+                options={{
+                    tabBarIcon:({color})=>(
+                        <MaterialCommunityIcons name="account" size={24} color={color} />
+                    ),
+                    headerShown:false
+                }}
+            />
+                 <Tab.Screen 
+                name="Payment"
+                component={Payment}
                 options={{
                     tabBarIcon:({color})=>(
                         <MaterialCommunityIcons name="account" size={24} color={color} />

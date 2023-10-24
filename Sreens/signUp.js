@@ -3,7 +3,13 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
+// import { setAuthProfile } from '../Redux/AuthSlice';
+import {setAuthStatus, setAuthProfile, setAuthToken,} from '../Redux/AuthSlice';
 const { width } = Dimensions.get("screen")
+import axios from 'axios';
+// import setItemAsync from "@react-native-async-storage/async-storage";
+import { setItemAsync } from 'expo-secure-store';
+
 
 
 export default function SignUp() {
@@ -13,6 +19,7 @@ export default function SignUp() {
     const [confirmPassword, setConfirmPassword]=useState("")
     const [error, setError]=useState('')
     const [hidePassword,setHidePassword]=useState(true)
+    const [isLoading, setIsLoading] = useState(false);
 
     const passwordVisibility = () => {
         setHidePassword(!hidePassword);
@@ -47,10 +54,94 @@ export default function SignUp() {
         setError(errors);
         return Object.keys(errors).length === 0;
     };
-
-
-
     const navigation = useNavigation()
+    const SIGNUP_API_URL = 'https://grocery-9znl.onrender.com/api/v1/auth/signup';
+
+
+
+    // const handleRegister=async()=>{
+       
+    //     // axios.post('https://grocery-9znl.onrender.com/api/v1/auth/signup', {
+    //     //   email: email,
+    //     //   password: password,
+    //     // })
+    //     axios.post(SIGNUP_API_URL, {
+    //         email,
+    //         password,
+    //            })
+    //     .then((response)=>{
+    //         console.log(response,'response'),
+    //         setIsLoading(false);
+    //         dispatch(setAuthProfile(response.data.user));
+    //         dispatch(setAuthToken(response.data.access._token));
+    //         dispatch(setAuthStatus(true));
+    //         setItemAsync("authToken",response.data.user)
+    //         setItemAsync("authProfile",JSON.stringify(response.data.user))
+    //         setIsLoading(false);
+    //         alert(response.data.message);
+    //         console.log (response.data.messag)
+    //     })
+    // .catch((error)=>{
+    //     setIsLoading(false);
+    //     console.log(error,"error");
+    //     setIsLoading(false);
+    //     console.log (data)
+    //     // alert(error.response.data.message);
+    // });
+    //  }
+
+    
+    
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post(SIGNUP_API_URL, {
+                email,
+                password,
+                location:'Ny',
+                fullname:'AI',
+                phone:'07'
+            });
+    
+            if (response && response.data) {
+                // Handle successful registration here
+                setIsLoading(false);
+                dispatch(setAuthProfile(response.data.user));
+                dispatch(setAuthToken(response.data.access._token));
+                dispatch(setAuthStatus(true));
+                setItemAsync("authToken", response.data.user);
+                setItemAsync("authProfile", JSON.stringify(response.data.user));
+                setIsLoading(false);
+                alert(response.data.message);
+    
+                // Navigate to HomeTabNavigator or any other screen after successful registration
+                // navigation.navigate('HomeTabNavigator');
+            } else {
+                // Handle the case where response or response.data is undefined
+                setIsLoading(false);
+                console.error('Invalid response from the server');
+                alert('Invalid response from the server');
+            }
+        } catch (error) {
+            // Handle any errors that occurred during the request
+            setIsLoading(false);
+            console.error(error);
+    
+            if (error.response && error.response.status === 409) {
+                // Handle conflict error (HTTP status code 409)
+                alert('Email address already exists. Please use a different email address.');
+            } else {
+                // Handle other errors
+                alert('An error occurred while processing your request');
+            }
+        }
+    };
+    
+
+
+
+
+
+
     return (
         <View style={styles.container}>
             <TouchableOpacity>
@@ -91,11 +182,11 @@ export default function SignUp() {
                 {
                error.password && <Text style={{color:'red'}}>{error.password}</Text>
                 }
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={styles.emailContainer}>
                         <TextInput style={styles.input} placeholder="confirm password" secureTextEntry={hidePassword}  onChangeText={(value)=>setConfirmPassword(value)} />
                         {/* <Feather name="eye-off" size={24} color="green" style={styles.icon} /> */}
-                        <Feather
+                        {/* <Feather
                         name={hidePassword ? "eye-off" : "eye"} 
                         size={24}
                         color="green"
@@ -103,15 +194,16 @@ export default function SignUp() {
                         onPress={passwordVisibility} 
                     />
                     </View>
-                </View>
-                {error.confirmPassword && (
-                <Text style={styles.errorText}>{error.confirmPassword}</Text>
-            )}
+                </View>  */}
+             
 
             </View>
-            <TouchableOpacity style={styles.button} onPress={onSubmit}>
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
                 <Text style={styles.buttonText}> Create account</Text>
             </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.button} onPress={onSubmit}>
+                <Text style={styles.buttonText}> Create account</Text>
+            </TouchableOpacity> */}
             <Text style={{ textAlign: 'center', padding: 10 }}>OR </Text>
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.apple}>

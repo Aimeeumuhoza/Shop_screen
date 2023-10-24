@@ -15,7 +15,7 @@ const CategoryScreen = ({ route, navigation }) => {
   } else {
     data = fruits;
   }
-
+console.log(data)
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>

@@ -3,23 +3,32 @@ import { useRoute } from '@react-navigation/native';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { Ionicons, Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { addToCart } from '../Redux/action';
+import { useDispatch } from 'react-redux';
 
 const Cart = ({ route }) => {
 
   const { item } = route.params;
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch()
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
   };
+
 
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
-const navigation=useNavigation()
-console.log (item)
+
+  const addProduct = () => {
+    dispatch(addToCart(item))
+    navigation.navigate('CartScreen',quantity);
+  }
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -37,21 +46,24 @@ console.log (item)
         <Text style={styles.price}>$ {item.price}</Text>
       </View>
       <Text style={styles.description}>{item.description}</Text>
-      <View style={{flexDirection:'row',alignContent:'space-between'}}>
-      <Text style={styles.label}>How many do you want?</Text>
-      <View style={styles.quantityContainer}>
-        <TouchableOpacity onPress={handleDecrement} style={styles.quantityButton}>
-          <MaterialCommunityIcons name="minus" size={18} color="green" />
-        </TouchableOpacity>
-        <Text style={styles.quantityText}>{quantity}</Text>
-        <TouchableOpacity onPress={handleIncrement} style={styles.quantityButton}>
-          <MaterialCommunityIcons name="plus" size={18} color="black" />
-        </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignContent: 'space-between' }}>
+        <Text style={styles.label}>How many do you want?</Text>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity onPress={handleDecrement} style={styles.quantityButton}>
+            <MaterialCommunityIcons name="minus" size={18} color="green" />
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>{quantity}</Text>
+          <TouchableOpacity onPress={handleIncrement} style={styles.quantityButton}>
+            <MaterialCommunityIcons name="plus" size={18} color="black" />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.addToCart}>
-        <TouchableOpacity style={styles.addToCartButton}>
-          <Text style={styles.addToCartText}onPress={() => navigation.navigate('CartScreen', {item:item})}>Add To Cart</Text>
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={addProduct}
+        >
+          <Text style={styles.addToCartText}>Add To Cart</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -69,7 +81,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     marginTop: 40,
-    alignContent:'center',
+    alignContent: 'center',
     justifyContent: 'space-between',
   },
   iconContainer: {
@@ -113,7 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginLeft:34
+    marginLeft: 34
   },
   quantityButton: {
     backgroundColor: '#E0E0E0',
@@ -125,23 +137,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   addToCart: {
-  
-   
+
+
   },
   addToCartButton: {
     backgroundColor: '#4CAF50',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    width:'100%',
-    marginTop:100
-    
+    width: '100%',
+    marginTop: 100
+
   },
   addToCartText: {
     color: 'white',
     fontSize: 18,
-    alignContent:'center',
-    justifyContent:'center',
-    marginLeft:89
+    alignContent: 'center',
+    justifyContent: 'center',
+    marginLeft: 89
   },
 });
