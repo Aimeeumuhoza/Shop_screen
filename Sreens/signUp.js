@@ -1,53 +1,55 @@
-import React ,{useState}from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 // import { setAuthProfile } from '../Redux/AuthSlice';
-import {setAuthStatus, setAuthProfile, setAuthToken,} from '../Redux/AuthSlice';
+import { setAuthStatus, setAuthProfile, setAuthToken, } from '../Redux/AuthSlice';
 const { width } = Dimensions.get("screen")
 import axios from 'axios';
 // import setItemAsync from "@react-native-async-storage/async-storage";
 import { setItemAsync } from 'expo-secure-store';
+import { useDispatch } from 'react-redux';
 
 
 
 export default function SignUp() {
 
-    const [email,setEmail]=useState("")
-    const [password, setPassword]=useState("")
-    const [confirmPassword, setConfirmPassword]=useState("")
-    const [error, setError]=useState('')
-    const [hidePassword,setHidePassword]=useState(true)
-    const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [error, setError] = useState('')
+    const [hidePassword, setHidePassword] = useState(true)
+    const [isLoading, setIsLoading] = useState("");
+    const dispatch = useDispatch()
 
     const passwordVisibility = () => {
         setHidePassword(!hidePassword);
     };
 
     const onSubmit = () => {
-        if(validateForm()){
-         navigation.navigate('HomeTabNavigator');
-       
+        if (validateForm()) {
+            navigation.navigate('HomeTabNavigator');
+
+        }
+
     }
-      
-      }
 
     const validateForm = () => {
         let errors = {};
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    //  passwordRegex.test(password);
+        //  passwordRegex.test(password);
         if (!email) {
             errors.email = 'Enter email';
         } else if (!emailRegex.test(email)) {
             errors.email = 'Invalid email format';
         }
-    
+
         if (!password) {
             errors.password = 'Enter password';
         }
-    
+
         if (password !== confirmPassword) {
             errors.confirmPassword = "Passwords don't match";
         }
@@ -58,89 +60,31 @@ export default function SignUp() {
     const SIGNUP_API_URL = 'https://grocery-9znl.onrender.com/api/v1/auth/signup';
 
 
-
-    // const handleRegister=async()=>{
-       
-    //     // axios.post('https://grocery-9znl.onrender.com/api/v1/auth/signup', {
-    //     //   email: email,
-    //     //   password: password,
-    //     // })
-    //     axios.post(SIGNUP_API_URL, {
-    //         email,
-    //         password,
-    //            })
-    //     .then((response)=>{
-    //         console.log(response,'response'),
-    //         setIsLoading(false);
-    //         dispatch(setAuthProfile(response.data.user));
-    //         dispatch(setAuthToken(response.data.access._token));
-    //         dispatch(setAuthStatus(true));
-    //         setItemAsync("authToken",response.data.user)
-    //         setItemAsync("authProfile",JSON.stringify(response.data.user))
-    //         setIsLoading(false);
-    //         alert(response.data.message);
-    //         console.log (response.data.messag)
-    //     })
-    // .catch((error)=>{
-    //     setIsLoading(false);
-    //     console.log(error,"error");
-    //     setIsLoading(false);
-    //     console.log (data)
-    //     // alert(error.response.data.message);
-    // });
-    //  }
-
-    
-    
     const handleRegister = async () => {
+        const data = {
+            email,
+            password,
+            location: 'Ny',
+            fullName: "ana",
+            phone: "078883411",
+            dateOfBirth: "5/2/2023"
+        }
         try {
-            const response = await axios.post(SIGNUP_API_URL, {
-                email,
-                password,
-                location:'Ny',
-                fullname:'AI',
-                phone:'07'
-            });
-    
-            if (response && response.data) {
-                // Handle successful registration here
-                setIsLoading(false);
-                dispatch(setAuthProfile(response.data.user));
-                dispatch(setAuthToken(response.data.access._token));
-                dispatch(setAuthStatus(true));
-                setItemAsync("authToken", response.data.user);
-                setItemAsync("authProfile", JSON.stringify(response.data.user));
-                setIsLoading(false);
-                alert(response.data.message);
-    
-                // Navigate to HomeTabNavigator or any other screen after successful registration
-                // navigation.navigate('HomeTabNavigator');
-            } else {
-                // Handle the case where response or response.data is undefined
-                setIsLoading(false);
-                console.error('Invalid response from the server');
-                alert('Invalid response from the server');
-            }
-        } catch (error) {
-            // Handle any errors that occurred during the request
+            setIsLoading(true);
+            const response = await axios.post(SIGNUP_API_URL, data);
+            console.log("res", response.data.access_token)
+            dispatch(setAuthStatus(true))
+            dispatch(setAuthProfile(response.data.user))
+            dispatch(setAuthToken(response.data.access_token))
+            setItemAsync("authToken", response.data.user)
+            setItemAsync("authProfile", JSON.stringify(response.data.user))
             setIsLoading(false);
-            console.error(error);
-    
-            if (error.response && error.response.status === 409) {
-                // Handle conflict error (HTTP status code 409)
-                alert('Email address already exists. Please use a different email address.');
-            } else {
-                // Handle other errors
-                alert('An error occurred while processing your request');
-            }
+            alert(response.data.message);
+            navigation.navigate('HomeTabNavigator')
+        } catch (error) {
+            console.error("err", error);
         }
     };
-    
-
-
-
-
-
 
     return (
         <View style={styles.container}>
@@ -158,35 +102,35 @@ export default function SignUp() {
             <View style={styles.inputContainer}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={styles.emailContainer}>
-                        <TextInput style={styles.input} placeholder="Email"  onChangeText={(value)=>setEmail(value)} />
-                        
+                        <TextInput style={styles.input} placeholder="Email" onChangeText={(value) => setEmail(value)} />
+
                         <MaterialCommunityIcons name="email-outline" size={24} color="green" style={styles.icon} />
                     </View>
                 </View>
                 {
-               error.email && <Text style={{color:'red'}}>{error.email}</Text>
+                    error.email && <Text style={{ color: 'red' }}>{error.email}</Text>
                 }
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={styles.emailContainer}>
-                        <TextInput style={styles.input} placeholder="password"   secureTextEntry={hidePassword}   onChangeText={(value)=>setPassword(value)}/>
+                        <TextInput style={styles.input} placeholder="password" secureTextEntry={hidePassword} onChangeText={(value) => setPassword(value)} />
                         {/* <Feather name="eye-off" size={24} color="green" style={styles.icon} onPress={()=>{setHide(!hidePassword)}}/> */}
                         <Feather
-                        name={hidePassword ? "eye-off" : "eye"} 
-                        size={24}
-                        color="green"
-                        style={styles.icon}
-                        onPress={passwordVisibility} 
-                    />
+                            name={hidePassword ? "eye-off" : "eye"}
+                            size={24}
+                            color="green"
+                            style={styles.icon}
+                            onPress={passwordVisibility}
+                        />
                     </View>
                 </View>
                 {
-               error.password && <Text style={{color:'red'}}>{error.password}</Text>
+                    error.password && <Text style={{ color: 'red' }}>{error.password}</Text>
                 }
                 {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={styles.emailContainer}>
                         <TextInput style={styles.input} placeholder="confirm password" secureTextEntry={hidePassword}  onChangeText={(value)=>setConfirmPassword(value)} />
                         {/* <Feather name="eye-off" size={24} color="green" style={styles.icon} /> */}
-                        {/* <Feather
+                {/* <Feather
                         name={hidePassword ? "eye-off" : "eye"} 
                         size={24}
                         color="green"
@@ -195,12 +139,17 @@ export default function SignUp() {
                     />
                     </View>
                 </View>  */}
-             
+
 
             </View>
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                <Text style={styles.buttonText}> Create account</Text>
-            </TouchableOpacity>
+            {isLoading ?
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>loading......</Text>
+                </TouchableOpacity> :
+                <TouchableOpacity style={styles.button} onPress={handleRegister}>
+                    <Text style={styles.buttonText}> Create account</Text>
+                </TouchableOpacity>
+            }
             {/* <TouchableOpacity style={styles.button} onPress={onSubmit}>
                 <Text style={styles.buttonText}> Create account</Text>
             </TouchableOpacity> */}

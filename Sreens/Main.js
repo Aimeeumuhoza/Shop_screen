@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { EvilIcons, Ionicons } from '@expo/vector-icons';
 import Box from '../Components/content1'
+import CategoriesComponent from "../Sreens/Get"
 
 const { width } = Dimensions.get("screen")
 export default function Main() {
@@ -25,8 +26,8 @@ export default function Main() {
 
             <View style={styles.bottomContainer}>
                 <Text> See all promos</Text>
-                <Box />
-
+                {/* <Box /> */}
+          <CategoriesComponent/>
             </View>
         </View>
     );

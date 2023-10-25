@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import Store from "./Redux/store";
 import Payment from "./Sreens/Payment"
 import CategoriesComponent from "./Sreens/Get"
+import CategoryScreen from "./Sreens/Vegetable"
 
 const slides = [
   {
@@ -58,6 +59,7 @@ const App = () => {
       <Provider store={Store}>
         <Router />
         {/* <CategoriesComponent/> */}
+        {/* <CategoryScreen/> */}
       </Provider>
     </>
   ) : (

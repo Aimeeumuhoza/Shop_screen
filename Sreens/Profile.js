@@ -1,14 +1,47 @@
-import React, { useState } from "react";
-import { Text, View, Image,ScrollView, Pressable, StyleSheet, Modal, TextInput, TouchableOpacity } from "react-native";
-import { FontAwesome ,AntDesign } from '@expo/vector-icons';
+import React, { useEffect, useState } from "react";
+import { Text, View, Image, ScrollView, Pressable, StyleSheet, Modal, TextInput, TouchableOpacity } from "react-native";
+import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import * as SecureStore from 'expo-secure-store';
+import { setAuthStatus, setLoaded, setAuthProfile, setAuthToken } from "../Redux/AuthSlice"
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 
 
 const UserProfile = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [ email, setEmail] = useState("@gmail.com")
-  const [ username, setUsername] = useState("A")
- const handleUpdate = () =>{}
+
+  const [data, setData] = useState(null)
+  const handleUpdate = () => { }
+  const dispatch = useDispatch();
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const storedData = await SecureStore.getItemAsync('authProfile');
+        const parsedData = JSON.parse(storedData);
+        setData(parsedData);
+  
+      } catch (error) {
+        console.error('Error retrieving user data:', error);
+      }
+    };
+
+    getUser();
+  }, []);
+
+  console.log("dt", data)
+
+  const handLogout = () => {
+    SecureStore.deleteItemAsync('authToken');
+    SecureStore.deleteItemAsync('authProfile');
+    dispatch(setAuthToken(null));
+    dispatch(setAuthStatus(false));
+    dispatch(setAuthProfile(null));
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.container}>
@@ -34,8 +67,8 @@ const UserProfile = () => {
                   <FontAwesome name="upload" size={24} color="white" />
                 </TouchableOpacity>
               </View>
-              <TextInput onChangeText={()=> setEmail(email)} style={styles.userText} placeholder="email" />
-              <TextInput onChangeText={()=> setUsername(username)} style={styles.userText} placeholder="username" />
+              <TextInput onChangeText={() => setEmail(email)} style={styles.userText} placeholder="email" />
+              <TextInput onChangeText={() => setUsername(username)} style={styles.userText} placeholder="username" />
               <View class={styles.modalButn}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
@@ -61,29 +94,29 @@ const UserProfile = () => {
         </Text>
       </View>
       <View style={styles.userDetails}>
-        <View style={{flexDirection:'row'}}>
-        <Image
-          style={styles.image}
-          source={require("../assets/1.jpg")}
-        />
-         <Pressable style={styles.butn} onPress={() => setModalVisible(!modalVisible)}>
-          <Text style={styles.changeButton}>Change profile</Text>
-        </Pressable>
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            style={styles.image}
+            source={require("../assets/1.jpg")}
+          />
+          <Pressable style={styles.butn} onPress={() => setModalVisible(!modalVisible)}>
+            <Text style={styles.changeButton}>Change profile</Text>
+          </Pressable>
         </View>
         <View>
-        <Text style={styles.userdata} >persanal Information</Text>
-        <Text style={styles.userdata} >Address</Text>
-        <Text style={styles.userdata} >Password</Text>
-        <Text style={styles.userdata} >About</Text>
+          <Text style={styles.userdata} >persanal Information</Text>
+          <Text style={styles.userdata} >FullName: {data && data.fullName}</Text>
+          <Text style={styles.userdata} >Address: {data && data.location }</Text>
+          <Text style={styles.userdata} >Email: {data && data.email}</Text>
+          <Text style={styles.userdata} >About</Text>
           <Text style={styles.userdata} >Help</Text>
-          <TouchableOpacity style={{flexDirection:'row',alignContent:'space-between'}}>
-          <Text>Logout</Text>
-          <View style={{marginLeft:9}}>
-          
-          </View>
+          <TouchableOpacity onPress={handLogout} style={{ flexDirection: 'row', alignContent: 'space-between' }}>
+            <Text>Logout</Text>
+            {/* <View style={{ marginLeft: 9 }}>
+            </View> */}
           </TouchableOpacity>
         </View>
-       
+
         {/* <Pressable style={styles.button}>
           <Text style={styles.changeButton}>LOG OUT</Text>
         </Pressable> */}
@@ -98,7 +131,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    flex:1
+    flex: 1
   },
   text: {
     marginTop: 50,
@@ -118,9 +151,9 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   imageContainer: {
-    flexDirection:'row',
-    alignContent:'flex-end',
-    marginLeft:6
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+    marginLeft: 6
 
 
   },
@@ -131,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   userDetails: {
-marginLeft:15
+    marginLeft: 15
   },
   userdata: {
     marginBottom: 20,
@@ -143,14 +176,14 @@ marginLeft:15
     backgroundColor: "white",
     borderRadius: 20,
     padding: 1,
-    width:'30%',
-    height:'22%'
+    width: '30%',
+    height: '22%'
   },
   changeButton: {
     color: "green",
     fontSize: 15,
     fontWeight: "bold",
-    textAlign:'center'
+    textAlign: 'center'
   },
   imageContainer: {
 
@@ -183,7 +216,7 @@ marginLeft:15
     backgroundColor: "grey",
     borderRadius: 20,
     padding: 10,
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   textStyle: {
     color: "white",
