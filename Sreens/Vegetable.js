@@ -39,7 +39,7 @@ const CategoryScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Text>Loading...</Text>
+        <Text>Loading..</Text>
       ) : (
         <FlatList
           data={groceries}
