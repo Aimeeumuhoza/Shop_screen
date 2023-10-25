@@ -25,9 +25,11 @@ export default function Main() {
             <Text style={styles.Buy}>BUY NOW</Text>
 
             <View style={styles.bottomContainer}>
-                <Text> See all promos</Text>
+                <View style={{flexDirection:"row", justifyContent:"flex-end", marginRight:20, marginTop:20}}>
+                    <Text> See all promos</Text>
+                </View>
                 {/* <Box /> */}
-          <CategoriesComponent/>
+                <CategoriesComponent />
             </View>
         </View>
     );

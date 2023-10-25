@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Main from "../Sreens/Main"
-import { FontAwesome ,Zocial,MaterialCommunityIcons  } from '@expo/vector-icons';
+import { FontAwesome, Zocial, MaterialCommunityIcons } from '@expo/vector-icons';
 import SignIn from '../Sreens/signIn';
 import SignUp from '../Sreens/signUp';
 import Login from '../Sreens/Login';
@@ -15,19 +15,19 @@ const Tab = createBottomTabNavigator()
 const HomeTabNavigator = () => {
     return (
         <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: 'green',
-      }}
-    >
+            screenOptions={{
+                tabBarActiveTintColor: 'green',
+            }}
+        >
             <Tab.Screen name="main"
                 component={Main}
                 options={{
                     tabBarIcon: ({ color }) => (
-                      
+
                         <FontAwesome name="shopping-basket" size={24} color={color} />
-                        
+
                     ),
-                    headerShown:false
+                    headerShown: false
                 }}
 
                 title="Home"
@@ -39,20 +39,20 @@ const HomeTabNavigator = () => {
                     tabBarIcon: ({ color }) => (
                         <Zocial name="cart" size={24} color={color} />
                     ),
-                    headerShown:false
+                    headerShown: false
                 }}
             />
-            <Tab.Screen 
+            <Tab.Screen
                 name="CartScreen"
                 component={CartScreen}
                 options={{
-                    tabBarIcon:({color})=>(
+                    tabBarIcon: ({ color }) => (
                         <FontAwesome name="shopping-bag" size={24} color={color} />
                     ),
-                    headerShown:false
+                    headerShown: false
                 }}
             />
-             <Tab.Screen 
+            <Tab.Screen 
                 name="UserProfile"
                 component={UserProfile}
                 options={{
@@ -62,7 +62,7 @@ const HomeTabNavigator = () => {
                     headerShown:false
                 }}
             />
-                 <Tab.Screen 
+            <Tab.Screen 
                 name="Payment"
                 component={Payment}
                 options={{

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Image, ScrollView, Pressable, StyleSheet, Modal, TextInput, TouchableOpacity } from "react-native";
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
-import * as SecureStore from 'expo-secure-store';
+import {deleteItemAsync , getItemAsync } from 'expo-secure-store';
 import { setAuthStatus, setLoaded, setAuthProfile, setAuthToken } from "../Redux/AuthSlice"
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -20,7 +20,7 @@ const UserProfile = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const storedData = await SecureStore.getItemAsync('authProfile');
+        const storedData = await getItemAsync('authProfile');
         const parsedData = JSON.parse(storedData);
         setData(parsedData);
   
@@ -32,11 +32,10 @@ const UserProfile = () => {
     getUser();
   }, []);
 
-  console.log("dt", data)
 
-  const handLogout = () => {
-    SecureStore.deleteItemAsync('authToken');
-    SecureStore.deleteItemAsync('authProfile');
+  const handLogout = async() => {
+    deleteItemAsync('authToken');
+    deleteItemAsync('authProfile');
     dispatch(setAuthToken(null));
     dispatch(setAuthStatus(false));
     dispatch(setAuthProfile(null));
@@ -44,6 +43,7 @@ const UserProfile = () => {
   };
 
   return (
+
     <View style={styles.container}>
       <View style={styles.centeredView}>
         <Modal
