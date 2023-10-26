@@ -1,6 +1,4 @@
 
-// const total = calcTotal(cart);
-
 export function calcTotal (cart) {
     var t = 0;
     cart.forEach(item => {
