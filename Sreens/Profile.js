@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Image, ScrollView, Pressable, StyleSheet, Modal, KeyboardAvoidingView, TextInput, TouchableOpacity } from "react-native";
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
-import { deleteItemAsync, getItemAsync } from 'expo-secure-store';
+import {deleteItemAsync , getItemAsync } from 'expo-secure-store';
 import { setAuthStatus, setLoaded, setAuthProfile, setAuthToken } from "../Redux/AuthSlice"
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -28,7 +28,7 @@ const UserProfile = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const storedData = await getItemAsync("authProfile");
+        const storedData = await SecureStore.getItemAsync('authProfile');
         const parsedData = JSON.parse(storedData);
         setData(parsedData);
       } catch (error) {
@@ -39,71 +39,11 @@ const UserProfile = () => {
     getUser();
   }, []);
 
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions");
-      return;
-    }
+  console.log("dt", data)
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setProfileImage(result.uri);
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("fullName", fullName);
-      formData.append("location", location);
-      formData.append("phone", phone);
-
-      if (profileImage) {
-        const localUri = profileImage;
-        const filename = localUri.split("/").pop();
-        const match = /\.(\w+)$/.exec(filename);
-        const type = match ? `image/${match[1]}` : `image`;
-
-        formData.append("profileImage", {
-          uri: localUri,
-          name: `${new Date().getTime()}_profile.${match[1]}`,
-          type: type,
-        });
-      }
-
-      const response = await axios.patch(
-        `${API_BASE_URL}/auth/users/updateProfile`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${TOKEN}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Profile Updated:", response.data);
-      setData(response.data);
-      alert("User updated successfully");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Failed to update user profile");
-    } finally {
-      setModalVisible(false);
-    }
-  };
-
-  const handLogout = async () => {
-    await deleteItemAsync("authToken");
-    await deleteItemAsync("authProfile");
+  const handLogout = () => {
+    SecureStore.deleteItemAsync('authToken');
+    SecureStore.deleteItemAsync('authProfile');
     dispatch(setAuthToken(null));
     dispatch(setAuthStatus(false));
     dispatch(setAuthProfile(null));
@@ -111,7 +51,6 @@ const UserProfile = () => {
   };
 
   return (
-  
     <View style={styles.container}>
       <View style={styles.centeredView}>
         <Modal
