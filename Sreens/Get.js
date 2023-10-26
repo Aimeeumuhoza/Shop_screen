@@ -180,29 +180,138 @@
 //     },
 // });
 
+// import React, { useEffect, useState } from 'react';
+// import { View, Text, StyleSheet, FlatList, Image,TouchableOpacity } from 'react-native';
+// import axios from 'axios';
+// import { useNavigation } from "@react-navigation/native";
+
+// const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
+// const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgyNDA0NzIsImV4cCI6MTY5ODI1MTI3Mn0.LN-m8aQ7GEK5PWHEqGj0byXSGMzRlGnhfPl4LX6x0A0';
+
+// const CategoriesComponent = () => {
+//     const [categories, setCategories] = useState([]);
+//     const [loading, setLoading] = useState(true);
+
+//     const GetCategories = async () => {
+//         try {
+//             const res = await axios.get(`${API_BASE_URL}/category`,{
+//                 headers: {
+//                     Authorization: `Bearer ${TOKEN}`
+//                 }
+//             });
+//             setCategories(res.data.data);
+//         } catch (error) {
+//             console.log('Error fetching categories:', error);
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     useEffect(() => {
+//         GetCategories();
+//     }, []);
+// console.log(categories)
+// const navigation = useNavigation()
+// return (
+//     <View style={styles.container}>
+//         {loading ? (
+//             <Text>Loading...</Text>
+//         ) : (
+//             <View style={styles.categoriesContainer}>
+//                 {categories.map((item) => (
+//                     <TouchableOpacity
+//                         key={item._id}
+//                         style={styles.categoryItem}
+//                         onPress={() => navigation.navigate('CategoryScreen', { category: item._id })}
+//                     >
+//                         <Image
+//                             style={styles.image}
+//                             source={{ uri: item.picture }}
+//                         />
+//                         <Text>{item.name}</Text>
+//                     </TouchableOpacity>
+//                 ))}
+//                 <Text>HH</Text>
+//             </View>
+//         )}
+//     </View>
+// );
+// };
+
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         padding: 20,
+//     },
+//     categoriesContainer: {
+//         flexDirection: 'row', 
+//         flexWrap: 'wrap', 
+//         justifyContent: 'center', 
+//     },
+//     categoryItem: {
+//         backgroundColor: '#F5F5F5',
+//         borderRadius: 8,
+//         padding: 15,
+//         marginVertical: 10,
+//         marginHorizontal: 10,
+//         alignItems: 'center', 
+//         width: '25%',
+//     },
+//     image: {
+//         width: 100,
+//         height: 100,
+//         resizeMode: 'cover',
+//         borderRadius: 50,
+//         marginBottom: 10,
+//     },
+// });
+
+// export default CategoriesComponent;
+
+
+
+
+
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import { TouchableOpacity } from 'react-native-web';
 import { useNavigation } from "@react-navigation/native";
+import { getItemAsync } from 'expo-secure-store';
 
 const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
- const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM3ZjAzNGI3OTMyNjUyOWM1YzRlMTEiLCJpYXQiOjE2OTgyMjQwNDcsImV4cCI6MTY5ODIzNDg0N30.yxjkmE9gpG7lKFiGTOvZXDYjLxUSCEUntCXVor3NwS0';
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgzMjg3MzQsImV4cCI6MTY5ODMzOTUzNH0.GyYY9_FnZtWACW80ZN5nPNs1l59XY9ofrTzkqgzKPpI';
 
 const CategoriesComponent = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState()
+
+    useEffect(() => {
+        const getToken = async () => {
+            try {
+                const storedData = await getItemAsync('authToken');
+                const parsedData = JSON.parse(storedData);
+                setToken(parsedData);
+
+            } catch (error) {
+                // console.error('Error retrieving user data:', error);
+            }
+        };
+        getToken();
+    }, [])
 
     const getCategories = async () => {
         try {
-            const res = await axios.get(`${API_BASE_URL}/category`,{
+            const res = await axios.get(`${API_BASE_URL}/category`, {
                 headers: {
                     Authorization: `Bearer ${TOKEN}`
                 }
-             } );
+            });
             setCategories(res.data.data);
         } catch (error) {
-            console.log('Error fetching categories:', error);
+            // console.log('Error fetching categories:', error);
         } finally {
             setLoading(false);
         }
@@ -211,61 +320,66 @@ const CategoriesComponent = () => {
     useEffect(() => {
         getCategories();
     }, []);
-console.log(categories)
-const navigation = useNavigation()
-return (
-    <View style={styles.container}>
-        {loading ? (
-            <Text>Loading...</Text>
-        ) : (
-            <View style={styles.categoriesContainer}>
-                {categories.map((item) => (
-                    <TouchableOpacity
-                        key={item._id}
-                        style={styles.categoryItem}
-                        onPress={() => navigation.navigate('CategoryScreen', { category: item._id })}
-                    >
-                        <Image
-                            style={styles.image}
-                            source={{ uri: item.picture }}
-                        />
-                        <Text>{item.name}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
-        )}
-    </View>
-);
+console.log("tk",token)
+    const navigation = useNavigation()
+    return (
+        <View style={styles.container}>
+            {loading ? (
+                <Text>Loading...</Text>
+            ) : (
+                <FlatList
+                    numColumns={3}
+                    data={categories}
+                    keyExtractor={(item) => item._id}
+                    renderItem={({ item }) => (
+                        <View style={styles.cardContainer}>
+                            <TouchableOpacity
+                                style={styles.categoryItem}
+                                onPress={() => navigation.navigate('CategoryScreen', { category: item._id })}
+                            >
+                                <View style={styles.cont}>
+                                    <Image
+                                        style={styles.image}
+                                        source={{ uri: item.picture }}
+                                    />
+                                </View>
+                                <Text>{item.name}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                />
+            )}
+        </View>
+
+    );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
+
     },
     categoriesContainer: {
-        flexDirection: 'row', 
-        flexWrap: 'wrap', 
-        justifyContent: 'center', 
+        paddingHorizontal: 10,
     },
     categoryItem: {
-        backgroundColor: '#F5F5F5',
         borderRadius: 8,
-        padding: 15,
         marginVertical: 10,
-        marginHorizontal: 10,
-        alignItems: 'center', 
-        width: '25%',
+        marginHorizontal: 4,
+        alignItems: 'center',
     },
     image: {
         width: 100,
         height: 100,
-        resizeMode: 'cover',
         borderRadius: 50,
-        marginBottom: 10,
+        // marginBottom: 10,
     },
+    cont: {
+        backgroundColor: "white",
+        borderRadius: 2,
+        marginRight: 2,
+        padding:10
+    }
 });
 
 export default CategoriesComponent;

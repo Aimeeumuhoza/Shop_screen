@@ -1,18 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from "@react-navigation/native";
 
 const CategoryScreen = ({ route }) => {
- const { category } = route.params;
- 
+  const { category } = route.params;
+
   const [groceries, setGroceries] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
-  //  const CATEGORY_ID = '65357d57f12138d1ae5c9590'; 
-  const TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM3ZjAzNGI3OTMyNjUyOWM1YzRlMTEiLCJpYXQiOjE2OTgyMjk1NDMsImV4cCI6MTY5ODI0MDM0M30.dAXFI16doU2nhwFaz2xOMTNudC2xUdH1o4D5LIu9Ghc';
-  
+  const TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgzMjg3MzQsImV4cCI6MTY5ODMzOTUzNH0.GyYY9_FnZtWACW80ZN5nPNs1l59XY9ofrTzkqgzKPpI'; 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,9 +33,10 @@ const CategoryScreen = ({ route }) => {
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures that the effect runs once after the initial render
+  }, []);
 
-  
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -44,17 +45,16 @@ const CategoryScreen = ({ route }) => {
         <FlatList
           data={groceries}
           keyExtractor={(item) => item._id}
+          numColumns={2} 
           renderItem={({ item }) => (
-            <View style={styles.categoryItem}>
+            <TouchableOpacity style={styles.categoryItem} onPress={() => navigation.navigate('Cart', { item: item })}>
               <Image style={styles.image} source={{ uri: item.picture }} />
               <Text style={styles.title}>{item.name}</Text>
-              <Text style={styles.description}>{item.description}</Text>
               <Text style={styles.price}>${item.price}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}
-      <Text>HH</Text>
     </View>
   );
 };
@@ -70,24 +70,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginVertical: 10,
+    marginHorizontal: 8, // Adjust the horizontal margin for proper spacing between items
+    flex: 1, // Ensure equal spacing between items in the row
+    minWidth: '48%', // Set minimum width for each item to ensure two items in a row
   },
   image: {
     width: '100%',
-    height: 200,
+    height: 150,
     resizeMode: 'cover',
     borderRadius: 8,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  description: {
-    fontSize: 16,
-    marginBottom: 10,
+    marginTop: 10,
   },
   price: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#4CAF50',
   },
 });

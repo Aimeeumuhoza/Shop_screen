@@ -58,7 +58,7 @@ export default function Login() {
             email: email,
             password: password,
         }).then((response) => {
-                console.log('response', response),
+                // console.log('response', response.data.access_token),
                 setIsLoading(false);
                 dispatch(setAuthProfile(response.data.user));
                 dispatch(setAuthToken(response.data.access_token));

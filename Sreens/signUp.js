@@ -64,8 +64,8 @@ export default function SignUp() {
         const data = {
             email,
             password,
-            location: 'Ny',
-            fullName: "ana",
+            location: 'Gisozi',
+            fullName: "annah",
             phone: "078883411",
             dateOfBirth: "5/2/2023"
         }
