@@ -6,32 +6,29 @@ import { useNavigation } from "@react-navigation/native";
 import { getItemAsync } from 'expo-secure-store';
 
 const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgzMjg3MzQsImV4cCI6MTY5ODMzOTUzNH0.GyYY9_FnZtWACW80ZN5nPNs1l59XY9ofrTzkqgzKPpI';
 
 const CategoriesComponent = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState()
 
-    useEffect(() => {
-        const getToken = async () => {
-            try {
-                const storedData = await getItemAsync('authToken');
-                const parsedData = JSON.parse(storedData);
-                setToken(parsedData);
-
-            } catch (error) {
-                // console.error('Error retrieving user data:', error);
+        const retrieving = async () => {
+            try{
+              const authToken = await getItemAsync("authToken");
+              if(authToken){
+                setToken(authToken)
+              }
+            }catch(error){
+              console.log(error)
             }
-        };
-        getToken();
-    }, [])
+          }
+
 
     const getCategories = async () => {
         try {
             const res = await axios.get(`${API_BASE_URL}/category`, {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             setCategories(res.data.data);
@@ -44,8 +41,9 @@ const CategoriesComponent = () => {
 
     useEffect(() => {
         getCategories();
+        retrieving()
     }, []);
-console.log("tk",token)
+
     const navigation = useNavigation()
     return (
         <View style={styles.container}>
