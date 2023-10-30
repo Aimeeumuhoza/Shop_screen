@@ -12,6 +12,7 @@ import * as ImagePicker from 'expo-image-picker';
 const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
 
 const UserProfile = () => {
+
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState(null);
   const [email, setEmail] = useState("");
@@ -19,9 +20,20 @@ const UserProfile = () => {
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
   const [profileImage, setProfileImage] = useState(null);
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [token, setToken] = useState("")
+
+  const retrieving = async () => {
+    try {
+      const authToken = await getItemAsync("authToken");
+      if (authToken) {
+        setToken(authToken)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     const getUser = async () => {
@@ -35,6 +47,7 @@ const UserProfile = () => {
     };
 
     getUser();
+    retrieving()
   }, []);
 
   const pickImage = async () => {
@@ -53,6 +66,7 @@ const UserProfile = () => {
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri);
     }
+
   };
 
   const handleUpdate = async () => {
@@ -70,6 +84,7 @@ const UserProfile = () => {
         const match = /\.(\w+)$/.exec(filename);
         const type = match ? `image/${match[1]}` : `image`;
 
+        // console.log(type, filename, localUri)
         formData.append("profileImage", {
           uri: localUri,
           name: new Date() + '_profile',
@@ -83,7 +98,7 @@ const UserProfile = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data"
           },
         }
       );
@@ -99,6 +114,7 @@ const UserProfile = () => {
       setModalVisible(false);
     }
   };
+
 
   const handLogout = async () => {
     await deleteItemAsync("authToken");
@@ -166,8 +182,8 @@ const UserProfile = () => {
         <View style={{ flexDirection: 'row' }}>
           <Image
             style={styles.image}
-            // source={{ uri: profileImage }}
-          source={{uri:data && data.profilePicture}}
+            // source={profileImage ? { uri: data.profilePicture } : require("../assets/1.jpg")}
+            source={{ uri: data && data.profilePicture }}
           />
 
           <Pressable style={styles.butn} onPress={() => setModalVisible(!modalVisible)}>
