@@ -9,9 +9,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 
-
 const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgzMjg3MzQsImV4cCI6MTY5ODMzOTUzNH0.GyYY9_FnZtWACW80ZN5nPNs1l59XY9ofrTzkqgzKPpI';
 
 const UserProfile = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,14 +45,13 @@ const UserProfile = () => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled) {
-      setProfileImage(result.uri);
+      setProfileImage(result.assets[0].uri);
     }
   };
 
@@ -66,32 +63,34 @@ const UserProfile = () => {
       formData.append("location", location);
       formData.append("phone", phone);
 
-      if (profileImage) {
-        const localUri = result.uri;
+      // if (profileImage) {
+        console.log("profe",profileImage)
+        const localUri = profileImage;
         const filename = localUri.split("/").pop();
         const match = /\.(\w+)$/.exec(filename);
         const type = match ? `image/${match[1]}` : `image`;
 
         formData.append("profileImage", {
-          uri: result.uri,
-          name: new Date()+'_profile',
-          type: type,
+          uri: localUri,
+          name: new Date() + '_profile',
+          type: "image/jpg",
         });
-      }
-
+      // }
+      const token = await getItemAsync("authToken");
       const response = await axios.patch(
         `${API_BASE_URL}/auth/users/updateProfile`,
         formData,
         {
           headers: {
-            Authorization: `Bearer ${TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      console.log("Profile Updated:", response.data);
+      console.log("Profile Updated:", response);
       setData(response.data);
+      setProfileImage(response.data.profilePicture)
       alert("User updated successfully");
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -110,8 +109,9 @@ const UserProfile = () => {
     navigation.navigate("Login");
   };
 
+  // console.log("pro",data)
   return (
-  
+
     <View style={styles.container}>
       <View style={styles.centeredView}>
         <Modal
@@ -131,7 +131,7 @@ const UserProfile = () => {
 
                 <TouchableOpacity style={styles.imagePicker} >
                   {/* {profilePicture?(  <FontAwesome name="upload" size={12} color="white" onPress={uploadProfileImage} />)} */}
-                  <FontAwesome name="upload" size={12} color="white" onPress={pickImage}/>
+                  <FontAwesome name="upload" size={12} color="white" onPress={pickImage} />
                 </TouchableOpacity>
               </View>
               <TextInput onChangeText={(email) => setEmail(email)} style={styles.userText} placeholder="email" />
@@ -166,8 +166,8 @@ const UserProfile = () => {
         <View style={{ flexDirection: 'row' }}>
           <Image
             style={styles.image}
-            // source={profileImage ? { uri: result.uri } : require("../assets/1.jpg")}
-            // source={{uri:data && data.profilePicture}}
+            // source={{ uri: profileImage }}
+          source={{uri:data && data.profilePicture}}
           />
 
           <Pressable style={styles.butn} onPress={() => setModalVisible(!modalVisible)}>
@@ -195,133 +195,133 @@ const UserProfile = () => {
       </View>
     </View>
   )
-  
+
 };
 
 export default UserProfile;
 
 const styles = StyleSheet.create({
   container: {
-        width: "100%",
-        height: "100%",
-        flex: 1
-      },
-      text: {
-        marginTop: 50,
-        marginLeft: 50,
-        marginBottom: 50,
-        color: 'black',
-        fontSize: 20,
-        fontWeight: "bold"
-      },
-      imagePicker: {
-        position: 'absolute',
-        right: 1,
-        bottom: 5,
-        backgroundColor: 'grey',
-        padding: 8,
-        borderRadius: 100,
-        elevation: 20,
-      },
-      imageContainer: {
-        flexDirection: 'row',
-        alignContent: 'flex-end',
-        marginLeft: 6
-    
-    
-      },
-      image: {
-        width: 100,
-        height: 100,
-        borderRadius: 78,
-        marginBottom: 40
-      },
-      userDetails: {
-        marginTop: 12,
-        marginLeft: 15,
-        flex: 1,
-      },
-      userdata: {
-        marginBottom: 20,
-        fontSize: 18,
-        fontWeight: "bold"
-      },
-      butn: {
-        marginTop: 56,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 1,
-        width: '30%',
-        height: '22%'
-      },
-      changeButton: {
-        color: "green",
-        fontSize: 15,
-        fontWeight: "bold",
-        textAlign: 'center'
-      },
-      imageContainer: {
-    
-      },
-      button: {
-        marginTop: 100,
-        backgroundColor: "grey",
-        borderRadius: 20,
-        padding: 10
-      },
-      centeredView: {
-        marginTop: -3,
-        borderRadius: 30,
-        // height:134
-    
-      },
-      modalView: {
-        margintop: 12,
-        backgroundColor: "green",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        // flex: 6,
-      },
-      buttonClose: {
-    
-        backgroundColor: "grey",
-        marginTop: 4,
-        backgroundColor: "grey",
-        borderRadius: 20,
-        padding: 10,
-        flexDirection: 'row'
-      },
-      textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        flexDirection: "row"
-      },
-      modalButn: {
-        flexDirection: "row"
-      },
-      userText: {
-        width: "100%",
-        height: 40,
-        margin: 20,
-        borderRadius: 15,
-        backgroundColor: "white",
-        color: "black",
-        paddingLeft: 10,
-        fontSize: 16,
-        fontWeight: "bold"
-      },
-      modalText: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 20,
-        color: "white"
-      }
-  
+    width: "100%",
+    height: "100%",
+    flex: 1
+  },
+  text: {
+    marginTop: 50,
+    marginLeft: 50,
+    marginBottom: 50,
+    color: 'black',
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  imagePicker: {
+    position: 'absolute',
+    right: 1,
+    bottom: 5,
+    backgroundColor: 'grey',
+    padding: 8,
+    borderRadius: 100,
+    elevation: 20,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+    marginLeft: 6
+
+
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 78,
+    marginBottom: 40
+  },
+  userDetails: {
+    marginTop: 12,
+    marginLeft: 15,
+    flex: 1,
+  },
+  userdata: {
+    marginBottom: 20,
+    fontSize: 18,
+    fontWeight: "bold"
+  },
+  butn: {
+    marginTop: 56,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 1,
+    width: '30%',
+    height: '22%'
+  },
+  changeButton: {
+    color: "green",
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: 'center'
+  },
+  imageContainer: {
+
+  },
+  button: {
+    marginTop: 100,
+    backgroundColor: "grey",
+    borderRadius: 20,
+    padding: 10
+  },
+  centeredView: {
+    marginTop: -3,
+    borderRadius: 30,
+    // height:134
+
+  },
+  modalView: {
+    margintop: 12,
+    backgroundColor: "green",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    // flex: 6,
+  },
+  buttonClose: {
+
+    backgroundColor: "grey",
+    marginTop: 4,
+    backgroundColor: "grey",
+    borderRadius: 20,
+    padding: 10,
+    flexDirection: 'row'
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    flexDirection: "row"
+  },
+  modalButn: {
+    flexDirection: "row"
+  },
+  userText: {
+    width: "100%",
+    height: 40,
+    margin: 20,
+    borderRadius: 15,
+    backgroundColor: "white",
+    color: "black",
+    paddingLeft: 10,
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+  modalText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "white"
+  }
+
 });
 
 

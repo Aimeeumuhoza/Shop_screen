@@ -5,7 +5,7 @@ import SignIn from '../Sreens/signIn';
 import SignUp from '../Sreens/signUp';
 import Login from '../Sreens/Login';
 import Cart from '../Sreens/Cart';
-
+import ShopScreen from "../Sreens/n"
 import CategoryScreen from "../Sreens/Vegetable"
 import CartScreen from "../Sreens/CartScreen"
 import UserProfile from "../Sreens/Profile"
@@ -43,8 +43,8 @@ const HomeTabNavigator = () => {
                 }}
             />
             <Tab.Screen
-                name="CartScreen"
-                component={CartScreen}
+                name="ShopScreen"
+                component={ShopScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <FontAwesome name="shopping-bag" size={24} color={color} />

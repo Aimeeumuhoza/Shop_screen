@@ -1,29 +1,39 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
+import * as SecureStore from 'expo-secure-store';
 
 const CategoryScreen = ({ route }) => {
   const { category } = route.params;
 
   const [groceries, setGroceries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null); 
 
   const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
-  const TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgzMjg3MzQsImV4cCI6MTY5ODMzOTUzNH0.GyYY9_FnZtWACW80ZN5nPNs1l59XY9ofrTzkqgzKPpI'; 
 
   useEffect(() => {
+    const retrieveToken = async () => {
+      try {
+        const authToken = await SecureStore.getItemAsync("authToken");
+        if (authToken) {
+          setToken(authToken);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    retrieveToken();
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${API_BASE_URL}/grocery/bycategory/${category}`,
-          {
-            headers: {
-              Authorization: `Bearer ${TOKEN}`
-            },
+        const response = await axios.get(`${API_BASE_URL}/grocery/bycategory/${category}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
+        });
         setGroceries(response.data.data);
       } catch (error) {
         console.error('Error fetching groceries:', error);
@@ -33,10 +43,9 @@ const CategoryScreen = ({ route }) => {
     };
 
     fetchData();
-  }, []);
+  }, [category, token]); 
 
   const navigation = useNavigation();
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -70,9 +79,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginVertical: 10,
-    marginHorizontal: 8, // Adjust the horizontal margin for proper spacing between items
-    flex: 1, // Ensure equal spacing between items in the row
-    minWidth: '48%', // Set minimum width for each item to ensure two items in a row
+    marginHorizontal: 8,
+    flex: 1,
+    minWidth: '48%', 
   },
   image: {
     width: '100%',

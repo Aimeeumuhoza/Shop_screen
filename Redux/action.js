@@ -1,59 +1,3 @@
-// import { createSlice } from "@reduxjs/toolkit";
-
-// export const cartSlice = createSlice({
-//   name: "carts",
-//   initialState: {
-//     carts:[]
-//   },
-//   reducers: {
-//     addToCart: (state, action) => {
-//       const cart = action.payload
-  
-//       const finds = state.carts.find((item) =>{ item._id === cart._id})
-      
-//       if (finds) {
-//         state.carts = state.carts.map((item) => {
-//           if (item._id === cart.id) {
-//             console.log('exist: ')
-//             return {
-//               ...item,
-//               quantity: item.quantity += 1
-//             }
-//           } else {
-//             return item
-//           }
-//         })
-//       } else {
-//         state.carts = [
-//           ...state.carts,
-//           {
-//             ...cart,
-//             quantity: 1
-//           }
-//         ]
-//       }
-
-//     },
-//     increment(state,  action ) {
-//       const cart = action.payload
-//       return state.carts.map((item) =>
-//         item.id === cart.payload
-//           ? {
-//               ...item,
-//               quantity: item.quantity + 1,
-              
-//             }
-//           : item
-//       );
-      
-//     }
-//   }
-// })
-
-// export const { addToCart ,increment } = cartSlice.actions
-
-// export default cartSlice.reducer
-
 import { createSlice } from "@reduxjs/toolkit";
 
 export const cartSlice = createSlice({
@@ -65,37 +9,72 @@ export const cartSlice = createSlice({
     addToCart: (state, action) => {
       const cart = action.payload;
 
-      // Check if the item is already in the cart
       const existingItem = state.carts.find((item) => item._id === cart._id);
 
       if (existingItem) {
-        // If the item is already in the cart, update its quantity
         state.carts = state.carts.map((item) =>
           item._id === cart._id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? {
+              ...item,
+              quantity: item.quantity + 1
+            }
             : item
         );
       } else {
-        // If the item is not in the cart, add it with a quantity of 1
-        state.carts.push({ ...cart, quantity: 1});
+        state.carts.push({ ...cart, quantity: 1 });
       }
     },
-    increment(state,  action ) {
-            const cart = action.payload
-            return state.carts.map((item) =>
-              item.id === cart.payload
-                ? {
-                    ...item,
-                    quantity: item.quantity + 1,
-                    
-                  }
-                : item
-            );
-            
-          }
+
+    increment(state, action) {
+      const cart = action.payload;
+      return {
+        ...state,
+        carts: state.carts.map((item) =>
+          item._id === cart.payload
+            ? {
+              ...item,
+              quantity: item.quantity + 1,
+            }
+            : item
+        ),
+      };
+    },
+    decrement(state, action) {
+      const itemId = action.payload;
+
+      const item = state.carts.find((cartItem) => cartItem._id === itemId);
+
+      if (item && item.quantity > 1) {
+        return {
+          ...state,
+          carts: state.carts.map((cartItem) =>
+            cartItem._id === itemId
+              ? {
+                ...cartItem,
+                quantity: cartItem.quantity - 1,
+              }
+              : cartItem
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          carts: state.carts.filter((cartItem) => cartItem._id !== itemId),
+        };
+      }
+    },
+    upadteQuantity: (state, action) => {
+      const { productId, newQantity } = action.payload
+      state.carts = state.carts.map((item) =>
+        item._id === productId
+          ? { ...item, quantity: newQantity }
+          : item
+      );
+    },
+
   },
 });
 
-export const { addToCart, increment } = cartSlice.actions;
+export const { addToCart, increment, decrement, upadteQuantity } = cartSlice.actions;
 
 export default cartSlice.reducer;

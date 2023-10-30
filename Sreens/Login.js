@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { setItemAsync } from 'expo-secure-store';
 import { AntDesign } from '@expo/vector-icons';
-// import { setAuthProfile, setAuthStatus } from '../Redux/AuthSlice';
 import axios from "axios";
 import { useDispatch } from 'react-redux';
-import { setAuthStatus, setAuthProfile, setAuthToken, setI } from '../Redux/AuthSlice';
+import { setAuthStatus, setAuthProfile, setAuthToken } from '../Redux/AuthSlice';
 const { width } = Dimensions.get("screen")
 
 export default function Login() {
@@ -51,31 +51,35 @@ export default function Login() {
     };
     const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
 
-
     const handleLogin = async () => {
         setIsLoading(true);
-        axios.post(`${API_BASE_URL}/auth/login`, {
-            email: email,
-            password: password,
-        }).then((response) => {
-                // console.log('response', response.data.access_token),
-                setIsLoading(false);
-                dispatch(setAuthProfile(response.data.user));
-                dispatch(setAuthToken(response.data.access_token));
-                dispatch(setAuthStatus(true));
-                setItemAsync("authToken", response.data.access_token)
-                setItemAsync("authProfile", JSON.stringify(response.data.user))
-                setIsLoading(false);
-                alert(response.data.message);
-                navigation.navigate('HomeTabNavigator')
-            })
-            .catch((error) => {
-                // setIsLoading(false);
-                console.error(error);
-                alert(error.message);
+        try {
+            const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+                email: email,
+                password: password,
             });
-
+    
+            setIsLoading(false);
+    
+            // Convert user object to JSON string
+            const userString = JSON.stringify(response.data.user);
+    
+            await SecureStore.setItemAsync("authToken", response.data.access_token);
+            await SecureStore.setItemAsync("authProfile", userString);
+    
+            dispatch(setAuthProfile(response.data.user));
+            dispatch(setAuthToken(response.data.access_token));
+            dispatch(setAuthStatus(true));
+    
+            alert(response.data.message);
+            navigation.navigate('HomeTabNavigator');
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+            alert(error.message);
+        }
     }
+    
 
     const navigation = useNavigation()
     return (
