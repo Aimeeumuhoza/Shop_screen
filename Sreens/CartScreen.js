@@ -7,6 +7,7 @@ import { updateCartQuantity } from '../Redux/apiCall';
 import * as SecureStore from 'expo-secure-store';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useNavigation } from "@react-navigation/native";
 
 
 const CartScreen = () => {
@@ -53,7 +54,7 @@ const CartScreen = () => {
   useEffect(() => {
     retrieveToken();
   }, [authToken])
-
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <Text style={styles.cartTitle}>Shopping Cart</Text>
@@ -80,6 +81,9 @@ const CartScreen = () => {
           </View>
         )}
       />
+           <TouchableOpacity onPress={() => navigation.navigate("ShopScreen")} style={styles.addToCartButton}>
+        <Text style={styles.buttonText}>Checkout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -136,6 +140,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  addToCartButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: 'center',
   },
 });
 

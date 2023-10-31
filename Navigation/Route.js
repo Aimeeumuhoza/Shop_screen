@@ -13,6 +13,7 @@ import Login from '../Sreens/Login';
 import ProductScreen from '../Sreens/ProductScreen'
 import CategoryScreen from '../Sreens/Vegetable'
 import CategoriesComponent from "../Sreens/Get"
+import Payment from "../Sreens/Payment"
 
 
 const Stack = createStackNavigator()
@@ -75,6 +76,13 @@ const Router = () => {
                  <Stack.Screen
                     name={"CategoriesComponent"}
                     component={CategoriesComponent}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                  <Stack.Screen
+                    name={"Payment"}
+                    component={Payment}
                     options={{
                         headerShown: false
                     }}

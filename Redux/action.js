@@ -64,10 +64,10 @@ export const cartSlice = createSlice({
       }
     },
     upadteQuantity: (state, action) => {
-      const { productId, newQantity } = action.payload
+      const { productId, newQuantity } = action.payload
       state.carts = state.carts.map((item) =>
         item._id === productId
-          ? { ...item, quantity: newQantity }
+          ? { ...item, quantity: newQuantity }
           : item
       );
     },

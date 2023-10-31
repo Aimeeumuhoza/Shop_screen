@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { removeFromCart, increment, decrement } from '../Redux/action';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from 'expo-secure-store';
 
-const ShopScreen = () => {
+const ShopScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
   const [token, setToken] = useState("");
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const ShopScreen = () => {
     retrieveToken();
   }, []);
 
-  const fetchData = async (token) => {
+  const fetchData = async () => {
     try {
       const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart', {
         headers: {
@@ -42,9 +43,8 @@ const ShopScreen = () => {
   const totalPrice = cartItems.reduce((total, item) => total + item.grocery.price * item.count, 0);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.cartTitle}>Shopping Cart</Text>
-      <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
       <FlatList
         data={cartItems}
         keyExtractor={(item) => item._id}
@@ -67,15 +67,22 @@ const ShopScreen = () => {
           </View>
         )}
       />
-    </View>
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalLabel}>Total Amount:</Text>
+        <Text style={styles.totalAmount}>${totalPrice}</Text>
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Payment")} style={styles.addToCartButton}>
+        <Text style={styles.buttonText}>Checkout</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: 'white',
+    padding: 16,
   },
   cartTitle: {
     fontSize: 24,
@@ -84,17 +91,41 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   quantity:{
-    marginTop:23,
-    flexDirection:'row',
-    justifyContent:'flex-end',
+    marginTop: 23,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     right: 30
   },
   cartItem: {
     marginVertical: 10,
-    padding: 10,
+    padding: 3,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#ccc',
+  },
+  addToCartButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  totalLabel: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  totalAmount: {
+    fontSize: 18,
   },
   image: {
     width: 100,
@@ -109,12 +140,6 @@ const styles = StyleSheet.create({
   itemDetail: {
     fontSize: 16,
     marginBottom: 5,
-  },
-  totalPrice: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'right',
   },
   actionButton: {
     color: 'black',
