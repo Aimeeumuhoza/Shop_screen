@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { removeFromCart, increment, decrement } from '../Redux/action';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from 'expo-secure-store';
 
 const ShopScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
   const [token, setToken] = useState("");
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -56,7 +52,6 @@ const ShopScreen = ({ navigation }) => {
       });
       setCartItems(updatedCartItems);
       
-      // Update the API with the new count
       await axios.patch(`https://grocery-9znl.onrender.com/api/v1/cart/updateItem/${itemId}`, {
         count: updatedCartItems.find(item => item.grocery._id === itemId).count
       }, {
@@ -82,7 +77,7 @@ const ShopScreen = ({ navigation }) => {
       });
       setCartItems(updatedCartItems);
       
-      // Update the API with the new count
+    
       await axios.patch(`https://grocery-9znl.onrender.com/api/v1/cart/updateItem/${itemId}`, {
         count: updatedCartItems.find(item => item.grocery._id === itemId).count
       }, {
@@ -110,16 +105,11 @@ const ShopScreen = ({ navigation }) => {
             <Text style={styles.itemName}>{item.grocery.name}</Text>
             <Text style={styles.itemDetail}>Price: ${item.grocery.price * item.count}</Text>
             <View style={styles.quantity}>
-              {/* <TouchableOpacity onPress={() => dispatch(increment(item.grocery))}>
-                <Text style={styles.actionButton}>+</Text>
-              </TouchableOpacity> */}
+            
                <TouchableOpacity onPress={() => handleIncrement(item.grocery._id)}>
                   <Text style={styles.actionButton}>+</Text>
                 </TouchableOpacity>
               <Text style={styles.itemDetail}>Quantity: {item.count}</Text>
-              {/* <TouchableOpacity onPress={() => dispatch(decrement(item.grocery._id))}>
-                <Text style={styles.actionButton}>-</Text>
-              </TouchableOpacity> */}
                <TouchableOpacity onPress={() => handleDecrement(item.grocery._id)}>
                   <Text style={styles.actionButton}>-</Text>
                 </TouchableOpacity>

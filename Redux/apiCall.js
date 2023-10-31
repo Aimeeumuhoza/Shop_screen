@@ -42,8 +42,8 @@ export const updateCartQuantity = async (dispatch, token, productId, newQuantity
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log("res", response)
-        dispatch(upadteQuantity(response.data.data))
+        console.log("res", response.data)
+        dispatch(upadteQuantity(response.data))
 
     } catch (error) {
         console.error("okay", error);

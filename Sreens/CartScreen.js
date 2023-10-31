@@ -28,13 +28,13 @@ const CartScreen = () => {
     // console.log(authToken)
   };
 
-  const handleUpdateQuantity = async (productId, newQuantity) => {
+  const handleUpdateQuantity = (productId, newQuantity) => {
     try {
       const quantity = Number(newQuantity);
 
-      const response = await updateCartQuantity(dispatch, authToken, productId, newQuantity);
+      const response = updateCartQuantity(dispatch, authToken, productId, newQuantity);
       dispatch(upadteQuantity({ productId, newQuantity: quantity }));
-      console.log("Quantity updated successfully:", response);
+      console.log("Quantity updated successfully:");
     } catch (error) {
       console.log(error)
     }
@@ -69,12 +69,12 @@ const CartScreen = () => {
               <Text style={styles.itemName}>{item.name}</Text>
               <Text style={styles.itemPrice}>Price: ${item.price * item.quantity}</Text>
               <Text style={styles.itemQuantity}>Quantity: {item.quantity}</Text>
-              <TouchableOpacity onPress={() => dispatch(increment({payload:item._id}))}>
-              {/* handleIncrement(item._id, item.quantity) */}
+              <TouchableOpacity onPress={() => handleIncrement(item._id, item.quantity)}>
+              {/* handleIncrement(item._id, item.quantity) dispatch(increment({payload:item._id}))*/}
                 <Text style={styles.actionButton}>Increase Quantity</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => dispatch(decrement(item._id))}>
-              {/* handleDecrement(item._id, item.quantity) */}
+              <TouchableOpacity onPress={() => handleDecrement(item._id, item.quantity)}>
+              {/* handleDecrement(item._id, item.quantity) dispatch(decrement(item._id))*/}
                 <Text style={styles.actionButton}>decrease Quantity</Text>
               </TouchableOpacity>
             </View>
