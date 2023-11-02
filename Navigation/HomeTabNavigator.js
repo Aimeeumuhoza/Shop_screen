@@ -73,6 +73,7 @@ const HomeTabNavigator = () => {
             <Tab.Screen 
                 name="Statistics"
                 component={StatsPage}
+                />
         </Tab.Navigator>
     )
 }
