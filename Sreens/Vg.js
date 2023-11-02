@@ -3,12 +3,12 @@ import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 import { Ionicons, AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import data from "../assets/Data/data";
 
-const Vg = () => {
+const Vg = ({ fontsLoaded }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Ionicons name="arrow-back" size={24} color="green" />
-                <Text style={styles.headerText}>Vegetable</Text>
+                <Text style={[styles.headerText,{ fontFamily: fontsLoaded ? 'LemonLove' : 'LemonLove' }]} >Vegetable</Text> 
                 <View style={styles.iconContainer}>
                     <Feather name="search" size={24} color="black" style={styles.icon} />
                     <AntDesign name="sharealt" size={24} color="black" style={styles.icon} />
@@ -19,7 +19,7 @@ const Vg = () => {
                 <Text> filter</Text>
                 <View style={styles.iconContainer}>
                     <MaterialCommunityIcons name="sort-reverse-variant" size={24} color="black" />
-                    <Text>Sort</Text>
+                    <Text style={{ fontFamily: "Agbalumo"}}>Sort</Text>
                 </View>
             </View>
             <FlatList
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     headerText: {
         marginLeft: 20,
         fontSize: 33,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        // fontFamily:"LemonLove"
     },
     iconContainer: {
         flexDirection: "row",

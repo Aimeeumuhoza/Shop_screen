@@ -8,7 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
-
+import { AntDesign } from '@expo/vector-icons';
 
 const CartScreen = () => {
   const cartItems = useSelector((state) => state.carts.carts);
@@ -65,17 +65,17 @@ const CartScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.cartItem}>
             <Image source={{ uri: item.picture }} style={styles.image} />
+            <View style={{flexDirection:'column'}}>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemName}>Price: ${item.price * item.quantity}</Text>
+            </View>
             <View style={styles.itemDetails}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemPrice}>Price: ${item.price * item.quantity}</Text>
-              <Text style={styles.itemQuantity}>Quantity: {item.quantity}</Text>
               <TouchableOpacity onPress={() => handleIncrement(item._id, item.quantity)}>
-              {/* handleIncrement(item._id, item.quantity) dispatch(increment({payload:item._id}))*/}
-                <Text style={styles.actionButton}>Increase Quantity</Text>
+                <AntDesign name="plussquareo" size={22} color="green" />
               </TouchableOpacity>
+              <Text style={{fontSize:21,color:"green"}}>{item.quantity}</Text>
               <TouchableOpacity onPress={() => handleDecrement(item._id, item.quantity)}>
-              {/* handleDecrement(item._id, item.quantity) dispatch(decrement(item._id))*/}
-                <Text style={styles.actionButton}>decrease Quantity</Text>
+               <AntDesign name="minussquareo" size={22} color="green" />
               </TouchableOpacity>
             </View>
           </View>
@@ -87,7 +87,6 @@ const CartScreen = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -108,6 +107,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#ccc',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   image: {
     width: 80,
@@ -117,6 +118,9 @@ const styles = StyleSheet.create({
   },
   itemDetails: {
     flex: 1,
+    justifyContent:"space-between",
+    flexDirection: 'row', 
+    marginLeft: 70, 
   },
   itemName: {
     fontSize: 18,
@@ -127,14 +131,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-  itemQuantity: {
-    fontSize: 16,
-    marginBottom: 10,
+  actionButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   actionButton: {
-    color: 'green',
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginLeft: 10, 
   },
   totalPrice: {
     fontSize: 20,
@@ -150,5 +152,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
 
 export default CartScreen;

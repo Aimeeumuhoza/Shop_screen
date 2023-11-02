@@ -30,7 +30,7 @@ export default function SignUp() {
     const onSubmit = () => {
         if (validateForm()) {
             navigation.navigate('HomeTabNavigator');
-
+            handleRegister()
         }
 
     }
@@ -80,7 +80,7 @@ export default function SignUp() {
             setItemAsync("authProfile", JSON.stringify(response.data.user))
             setIsLoading(false);
             alert(response.data.message);
-            navigation.navigate('HomeTabNavigator')
+            // navigation.navigate('HomeTabNavigator')
         } catch (error) {
             console.error("err", error);
         }
@@ -96,8 +96,10 @@ export default function SignUp() {
                 />
             </TouchableOpacity>
             <View style={styles.getstarted}>
-                <Text style={styles.title}>Let's get started</Text>
-                <Text> create account to see Our top picks for you</Text>
+                <View style={styles.title}>
+                <Text style={{fontFamily:"NotoSansOsmanya"}}>Let's get started</Text>
+                </View>
+                <Text style={{fontFamily:"NotoSansOsmanya"}}> create account to see Our top picks for you</Text>
             </View>
             <View style={styles.inputContainer}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -126,11 +128,11 @@ export default function SignUp() {
                 {
                     error.password && <Text style={{ color: 'red' }}>{error.password}</Text>
                 }
-                {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={styles.emailContainer}>
                         <TextInput style={styles.input} placeholder="confirm password" secureTextEntry={hidePassword}  onChangeText={(value)=>setConfirmPassword(value)} />
                         {/* <Feather name="eye-off" size={24} color="green" style={styles.icon} /> */}
-                {/* <Feather
+                 <Feather
                         name={hidePassword ? "eye-off" : "eye"} 
                         size={24}
                         color="green"
@@ -138,7 +140,7 @@ export default function SignUp() {
                         onPress={passwordVisibility} 
                     />
                     </View>
-                </View>  */}
+                </View> 
 
 
             </View>
@@ -146,13 +148,10 @@ export default function SignUp() {
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>loading......</Text>
                 </TouchableOpacity> :
-                <TouchableOpacity style={styles.button} onPress={handleRegister}>
+                <TouchableOpacity style={styles.button} onPress={onSubmit}>
                     <Text style={styles.buttonText}> Create account</Text>
                 </TouchableOpacity>
             }
-            {/* <TouchableOpacity style={styles.button} onPress={onSubmit}>
-                <Text style={styles.buttonText}> Create account</Text>
-            </TouchableOpacity> */}
             <Text style={{ textAlign: 'center', padding: 10 }}>OR </Text>
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.apple}>

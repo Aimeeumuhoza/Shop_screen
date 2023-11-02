@@ -9,7 +9,8 @@ import {
   
 } from 'react-native'; 
 import CountryPicker from 'react-native-country-picker-modal';
-import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign ,Fontisto} from '@expo/vector-icons';
+
 
 const { width } = Dimensions.get('screen');
 
@@ -18,7 +19,7 @@ export default function Payment() {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCVV] = useState('');
   const [country, setCountry] = React.useState('');
-  const [selected, setSelected] = useState('');
+  const [postCode, setPostCode] = useState('');
 
   return (
     <View style={styles.container}>
@@ -30,16 +31,16 @@ export default function Payment() {
       </View>
       <View style={styles.inputContainer}>
         <View style={styles.emailContainer}>
-          <MaterialCommunityIcons
-            name="credit-card-outline"
-            size={24}
-            color="green"
-            style={styles.icon}
-          />
           <TextInput
             style={styles.input}
             placeholder="Card Number"
             onChangeText={(value) => setCardNumber(value)}
+          />
+           <MaterialCommunityIcons
+            name="credit-card-outline"
+            size={24}
+            color="#08C25E"
+            style={styles.icon}
           />
         </View>
         <View style={styles.inputRow}>
@@ -58,7 +59,7 @@ export default function Payment() {
             />
           </View>
         </View>
-        <View style={styles.emailContainer}>
+        <View style={styles.emaillContainer}>
          <CountryPicker
             {...{
               onSelect: (country) => setCountry(country),
@@ -72,6 +73,20 @@ export default function Payment() {
             withEmoji
             withModal
             visible={false}
+          />
+          <Fontisto name="world" size={24} color="#08C25E" />
+        </View>
+        <View style={styles.emailContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Post Code"
+            onChangeText={(value) => setPostCode(value)}
+          />
+           <MaterialCommunityIcons
+            name="credit-card-outline"
+            size={24}
+            color="#08C25E"
+            style={styles.icon}
           />
         </View>
       </View>
@@ -97,7 +112,7 @@ inputContainer: {
 
 },
 icon: {
-    left: 7
+    left: -20
 },
 input: {
     height: 50,
@@ -112,12 +127,21 @@ emailContainer: {
   alignItems: 'center',
   borderColor: 'gray',
   marginBottom: 15,
+  justifyContent:'space-between'
+},
+emaillContainer: {
+  marginTop:23,
+  flexDirection: 'row',
+  borderBottomWidth: 1,
+  borderColor: 'gray',
+  marginBottom: 15,
+  justifyContent:'space-between'
 },
 
 button: {
     height: 50,
     width: width - 40,
-    backgroundColor: 'green',
+    backgroundColor: '#08C25E',
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',

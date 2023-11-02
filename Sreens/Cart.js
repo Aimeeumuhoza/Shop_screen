@@ -61,7 +61,9 @@ const Cart = ({ route }) => {
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.price}>$ {item.price}</Text>
       </View>
-      <Text style={styles.description}>{item.description}</Text>
+      <View style={styles.description}>
+      <Text style={{fontFamily:'NotoSansOsmanya'}} >{item.description}</Text>
+      </View>
       <View style={{ flexDirection: 'row', alignContent: 'space-between' }}>
         <Text style={styles.label}>How many do you want?</Text>
         <View style={styles.quantityContainer}>

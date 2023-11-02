@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, SafeAreaView } from "react-native";
+import React, { useState,useEffect } from "react";
+import { View, Text, Image, StyleSheet, SafeAreaView} from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 import Router from "./Navigation/Route";
 import UserProfile from "./Sreens/Profile"
 import { Provider } from "react-redux";
 import Store from "./Redux/store";
-import Payment from "./Sreens/Payment"
-import CategoriesComponent from "./Sreens/Get"
-import CategoryScreen from "./Sreens/Vegetable"
+import Vg from "./Sreens/Vg"
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { NavigationContainer } from "@react-navigation/native";
 
 const slides = [
   {
@@ -36,6 +37,27 @@ const slides = [
 const App = () => {
   const [showRealApp, setShowRealApp] = useState(false);
 
+  SplashScreen.preventAutoHideAsync();
+  const [fontsLoaded] = useFonts({
+    LemonLove: require("./assets/fonts/LemonLove.ttf"),
+    Agbalumo:require("./assets/fonts/Agbalumo-Regular.ttf"),
+    NotoSansOsmanya:require("./assets/fonts/NotoSansOsmanya-Regular.ttf")
+
+  });
+
+
+  useEffect(()=>{
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  },[fontsLoaded])
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+
+
   const RenderItem = ({ item }) => {
     return (
       <View style={styles.slide}>
@@ -57,9 +79,9 @@ const App = () => {
   return showRealApp ? (
     <>
       <Provider store={Store}>
+      
         <Router />
-        {/* <CategoriesComponent/> */}
-        {/* <CategoryScreen/> */}
+       
       </Provider>
     </>
   ) : (
@@ -84,6 +106,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
+
   },
   text2: {
     color: "#000",

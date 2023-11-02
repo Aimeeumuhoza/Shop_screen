@@ -19,7 +19,9 @@ export default function Main() {
                 <Ionicons name="notifications" size={40} color="white" style={{ marginLeft: 23 }} />
             </View>
             <View style={styles.banana}>
-                <Text style={styles.TextB}>BANANA {'\n'}5% OFF </Text>
+                <View style={styles.TextB}>
+                <Text style={{fontFamily:"NotoSansOsmanya"}}>BANANA {'\n'}5% OFF </Text>
+                </View>
                 <Image source={require("../assets/banana.png")} style={styles.image} />
             </View>
             <Text style={styles.Buy}>BUY NOW</Text>

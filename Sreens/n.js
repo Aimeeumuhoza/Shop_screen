@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { AntDesign } from '@expo/vector-icons'
 
 const ShopScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
@@ -105,13 +106,14 @@ const ShopScreen = ({ navigation }) => {
             <Text style={styles.itemName}>{item.grocery.name}</Text>
             <Text style={styles.itemDetail}>Price: ${item.grocery.price * item.count}</Text>
             <View style={styles.quantity}>
-            
                <TouchableOpacity onPress={() => handleIncrement(item.grocery._id)}>
-                  <Text style={styles.actionButton}>+</Text>
+                  {/* <Text style={styles.actionButton}>+</Text> */}
+                  <AntDesign name="plussquareo" size={22} color="green" />
                 </TouchableOpacity>
-              <Text style={styles.itemDetail}>Quantity: {item.count}</Text>
+              <Text style={styles.itemDetail}>{item.count}</Text>
                <TouchableOpacity onPress={() => handleDecrement(item.grocery._id)}>
-                  <Text style={styles.actionButton}>-</Text>
+                  {/* <Text style={styles.actionButton}>-</Text> */}
+                  <AntDesign name="minussquareo" size={22} color="green" />
                 </TouchableOpacity>
             </View>
             </View>
@@ -142,10 +144,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   quantity:{
-    marginTop: 23,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    right: 30
+    flex: 1,
+    justifyContent:"space-between",
+    flexDirection: 'row', 
+    marginLeft: 280,
+    marginRight:2,
   },
   cartItem: {
     marginVertical: 10,
@@ -187,10 +190,12 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: 'bold',
+  
   },
   itemDetail: {
-    fontSize: 16,
+    fontSize: 17,
     marginBottom: 5,
+
   },
   actionButton: {
     color: 'black',

@@ -1,5 +1,5 @@
 import { getItemAsync } from "expo-secure-store";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { setAuthLoaded, setAuthStatus, setAuthToken } from "../Redux/AuthSlice";
 import { useEffect } from "react";
 
@@ -13,7 +13,7 @@ export default RootNavigation=()=>{
 
     const handleAuth=async()=>{
     let token =await getItemAsync("authToken")
-    console.log(teken,'Auth token');
+    console.log(token,'Auth token');
 
 
     if(token){
