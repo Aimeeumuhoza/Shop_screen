@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   categoryItem: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: 'white',
     borderRadius: 8,
     padding: 15,
     marginVertical: 10,

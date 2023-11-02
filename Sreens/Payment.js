@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -15,12 +16,13 @@ import { MaterialCommunityIcons, AntDesign ,Fontisto} from '@expo/vector-icons';
 const { width } = Dimensions.get('screen');
 
 export default function Payment() {
+  // const { totalPrice } = route.params;
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCVV] = useState('');
   const [country, setCountry] = React.useState('');
   const [postCode, setPostCode] = useState('');
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -90,7 +92,8 @@ export default function Payment() {
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <Text style={styles.totalAmount}>$</Text>
+      <TouchableOpacity style={styles.button}  onPress={() => navigation.navigate('CheckOut')}>
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     </View>

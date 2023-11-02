@@ -124,7 +124,7 @@ const ShopScreen = ({ navigation }) => {
         <Text style={styles.totalLabel}>Total Amount:</Text>
         <Text style={styles.totalAmount}>${totalPrice}</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Payment")} style={styles.addToCartButton}>
+      <TouchableOpacity onPress={() => navigation.navigate("Payment",{totalPrice:totalPrice})} style={styles.addToCartButton}>
         <Text style={styles.buttonText}>Checkout</Text>
       </TouchableOpacity>
     </ScrollView>

@@ -14,7 +14,9 @@ import ProductScreen from '../Sreens/ProductScreen'
 import CategoryScreen from '../Sreens/Vegetable'
 import CategoriesComponent from "../Sreens/Get"
 import Payment from "../Sreens/Payment"
-
+import CheckOut from '../Sreens/CheckOut';
+import OnGoing from '../Sreens/Ongoing';
+import OrderHistory from "../Sreens/Orderhistory"
 
 const Stack = createStackNavigator()
 
@@ -83,6 +85,27 @@ const Router = () => {
                   <Stack.Screen
                     name={"Payment"}
                     component={Payment}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                  <Stack.Screen
+                    name={"CheckOut"}
+                    component={CheckOut}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                   <Stack.Screen
+                    name={"OnGoing"}
+                    component={OnGoing}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                  <Stack.Screen
+                    name={"OrderHistory"}
+                    component={OrderHistory}
                     options={{
                         headerShown: false
                     }}
