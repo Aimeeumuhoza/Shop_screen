@@ -20,7 +20,7 @@ import OrderHistory from "../Sreens/Orderhistory"
 
 const Stack = createStackNavigator()
 
-const Router = ({ userRole }) => {
+const Router = () => {
     return (
         <NavigationContainer>
             < Stack.Navigator>
@@ -31,67 +31,86 @@ const Router = ({ userRole }) => {
                         headerShown: false
                     }}
                 />
-                {userRole === "admin" ? (
-                    <Stack.Screen
-                        name="CategoryScreen"
-                        component={CategoryScreen}
-                        options={{ headerShown: false }}
-                    />
-                ) : (
-                    <><Stack.Screen
-                        name={'HomeTabNavigator'}
-                        component={HomeTabNavigator}
-                        options={{
-                            headerShown: false
-                        }} /><Stack.Screen
-                            name={"sign up"}
-                            component={SignUp}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"CategoryScreen"}
-                            component={CategoryScreen} /><Stack.Screen
-                            name={"main"}
-                            component={Main}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"CartScreen"}
-                            component={CartScreen}
-                            options={{
-                                headerShown: true
-                            }} /><Stack.Screen
-                            name={"Cart"}
-                            component={Cart}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"CategoriesComponent"}
-                            component={CategoriesComponent}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"Payment"}
-                            component={Payment}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"CheckOut"}
-                            component={CheckOut}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"OnGoing"}
-                            component={OnGoing}
-                            options={{
-                                headerShown: false
-                            }} /><Stack.Screen
-                            name={"OrderHistory"}
-                            component={OrderHistory}
-                            options={{
-                                headerShown: false
-                            }} /></>
-                )}
+                
+                  <Stack.Screen
+                    name={'HomeTabNavigator'}
+                    component={HomeTabNavigator}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                <Stack.Screen
+                    name={"sign up"}
+                    component={SignUp}
+                    options={{
+                        headerShown: false
+
+                    }}
+                />
+                <Stack.Screen
+                    name={"CategoryScreen"}
+                    component={CategoryScreen}
+                />
+              
+
+                <Stack.Screen
+                    name={"main"}
+                    component={Main}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                
+                <Stack.Screen
+                    name={"CartScreen"}
+                    component={CartScreen}
+                    options={{
+                        headerShown: true
+                    }}
+                />
+                     <Stack.Screen
+                    name={"Cart"}
+                    component={Cart}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                 <Stack.Screen
+                    name={"CategoriesComponent"}
+                    component={CategoriesComponent}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                  <Stack.Screen
+                    name={"Payment"}
+                    component={Payment}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                  <Stack.Screen
+                    name={"CheckOut"}
+                    component={CheckOut}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                   {/* <Stack.Screen
+                    name={"OnGoing"}
+                    component={OnGoing}
+                    options={{
+                        headerShown: false
+                    }}
+                /> */}
+
+                  <Stack.Screen
+                    name={"OrderHistory"}
+                    component={OrderHistory}
+                    options={{
+                        headerShown: false
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );

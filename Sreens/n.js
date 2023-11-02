@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons'
 const ShopScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
   const [token, setToken] = useState("");
+  const [cartId, setCartId] = useState([])
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -32,14 +33,15 @@ const ShopScreen = ({ navigation }) => {
         }
       });
       setCartItems(response.data.data.items);
+      setCartId(response.data.data._id)
     } catch (error) {
       console.error('Error fetching cart items:', error);
     }
   };
 
   const totalPrice = cartItems.reduce((total, item) => total + item.grocery.price * item.count, 0);
-  
-  
+
+
   const handleIncrement = async (itemId) => {
     try {
       const updatedCartItems = cartItems.map(item => {
@@ -52,7 +54,7 @@ const ShopScreen = ({ navigation }) => {
         return item;
       });
       setCartItems(updatedCartItems);
-      
+
       await axios.patch(`https://grocery-9znl.onrender.com/api/v1/cart/updateItem/${itemId}`, {
         count: updatedCartItems.find(item => item.grocery._id === itemId).count
       }, {
@@ -77,8 +79,8 @@ const ShopScreen = ({ navigation }) => {
         return item;
       });
       setCartItems(updatedCartItems);
-      
-    
+
+
       await axios.patch(`https://grocery-9znl.onrender.com/api/v1/cart/updateItem/${itemId}`, {
         count: updatedCartItems.find(item => item.grocery._id === itemId).count
       }, {
@@ -91,8 +93,7 @@ const ShopScreen = ({ navigation }) => {
     }
   };
 
-
-
+  // console.log("cartId", cartId)
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.cartTitle}>Shopping Cart</Text>
@@ -103,19 +104,19 @@ const ShopScreen = ({ navigation }) => {
           <View style={styles.cartItem}>
             <Image style={styles.image} source={{ uri: item.grocery.picture }} />
             <View style={{}}>
-            <Text style={styles.itemName}>{item.grocery.name}</Text>
-            <Text style={styles.itemDetail}>Price: ${item.grocery.price * item.count}</Text>
-            <View style={styles.quantity}>
-               <TouchableOpacity onPress={() => handleIncrement(item.grocery._id)}>
+              <Text style={styles.itemName}>{item.grocery.name}</Text>
+              <Text style={styles.itemDetail}>Price: ${item.grocery.price * item.count}</Text>
+              <View style={styles.quantity}>
+                <TouchableOpacity onPress={() => handleIncrement(item.grocery._id)}>
                   {/* <Text style={styles.actionButton}>+</Text> */}
                   <AntDesign name="plussquareo" size={22} color="green" />
                 </TouchableOpacity>
-              <Text style={styles.itemDetail}>{item.count}</Text>
-               <TouchableOpacity onPress={() => handleDecrement(item.grocery._id)}>
+                <Text style={styles.itemDetail}>{item.count}</Text>
+                <TouchableOpacity onPress={() => handleDecrement(item.grocery._id)}>
                   {/* <Text style={styles.actionButton}>-</Text> */}
                   <AntDesign name="minussquareo" size={22} color="green" />
                 </TouchableOpacity>
-            </View>
+              </View>
             </View>
           </View>
         )}
@@ -124,7 +125,9 @@ const ShopScreen = ({ navigation }) => {
         <Text style={styles.totalLabel}>Total Amount:</Text>
         <Text style={styles.totalAmount}>${totalPrice}</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Payment",{totalPrice:totalPrice})} style={styles.addToCartButton}>
+      <TouchableOpacity onPress={() =>
+        navigation.navigate("Payment", { totalPrice: totalPrice, cartId: cartId })}
+        style={styles.addToCartButton}>
         <Text style={styles.buttonText}>Checkout</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -143,12 +146,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-  quantity:{
+  quantity: {
     flex: 1,
-    justifyContent:"space-between",
-    flexDirection: 'row', 
+    justifyContent: "space-between",
+    flexDirection: 'row',
     marginLeft: 280,
-    marginRight:2,
+    marginRight: 2,
   },
   cartItem: {
     marginVertical: 10,
@@ -190,7 +193,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: 'bold',
-  
+
   },
   itemDetail: {
     fontSize: 17,
