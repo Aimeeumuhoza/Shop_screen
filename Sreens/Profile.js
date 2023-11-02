@@ -130,10 +130,7 @@ const UserProfile = () => {
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Update Profile</Text>
               <View class={styles.imageContainer}>
-
-
                 <TouchableOpacity style={styles.imagePicker} >
-                  {/* {profilePicture?(  <FontAwesome name="upload" size={12} color="white" onPress={uploadProfileImage} />)} */}
                   <FontAwesome name="upload" size={12} color="white" onPress={pickImage}/>
                 </TouchableOpacity>
               </View>
@@ -280,7 +277,7 @@ const styles = StyleSheet.create({
       },
       modalView: {
         margintop: 12,
-        backgroundColor: "green",
+        backgroundColor: "lightgreen",
         borderRadius: 20,
         padding: 35,
         alignItems: "center",

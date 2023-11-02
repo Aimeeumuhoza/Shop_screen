@@ -27,7 +27,7 @@ export default function Login() {
     const onSubmit = () => {
         if (validateForm()) {
             navigation.navigate('HomeTabNavigator');
-            handleLogin()
+            // handleLogin()
 
         }
 
@@ -70,7 +70,7 @@ export default function Login() {
             dispatch(setAuthToken(response.data.access_token));
             dispatch(setAuthStatus(true));
            alert(response.data.message);
-           
+           navigation.navigate('HomeTabNavigator');
         } catch (error) {
             setIsLoading(false);
             console.error(error);
@@ -123,7 +123,7 @@ export default function Login() {
             </View>
             {isLoading ? <TouchableOpacity style={styles.button} >
                 <Text style={styles.buttonText}> loading .....</Text>
-            </TouchableOpacity> : <TouchableOpacity style={styles.button} onPress={onSubmit}>
+            </TouchableOpacity> : <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}> Login</Text>
             </TouchableOpacity>}
             <Text style={{ textAlign: 'center', padding: 10 , fontFamily:"NotoSansOsmanya"}} onPress={() => navigation.navigate("sign up")}>You don't have an account? create One </Text>

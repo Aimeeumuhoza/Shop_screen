@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity ,TextInput} from 'react-native';
 import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from 'expo-secure-store';
+import { EvilIcons, Ionicons } from '@expo/vector-icons';
 
 const CategoryScreen = ({ route }) => {
   const { category } = route.params;
@@ -48,6 +49,13 @@ const CategoryScreen = ({ route }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <View style={{flexDirection:"row"}}>
+      <Ionicons name="arrow-back" size={24} color="black" />
+       <View style={styles.Search}>
+                    <TextInput style={styles.input} placeholder="Search" />
+                    <EvilIcons name="search" size={30} color="black" />
+                </View>
+                </View>
       {loading ? (
         <Text>Loading..</Text>
       ) : (
@@ -64,6 +72,7 @@ const CategoryScreen = ({ route }) => {
           )}
         />
       )}
+      <Text>gguuuuu</Text>
     </View>
   );
 };
@@ -87,8 +96,18 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     resizeMode: 'cover',
-    borderRadius: 8,
+    borderRadius: 1,
   },
+  Search: {
+    backgroundColor: 'grey',
+    width: '90%',
+    padding: 8,
+    marginLeft: 15,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+
+},
   title: {
     fontSize: 18,
     fontWeight: 'bold',

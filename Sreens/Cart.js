@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { Ionicons, Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, EvilIcons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { addToCart } from '../Redux/action';
 import { useDispatch } from 'react-redux';
@@ -37,21 +37,17 @@ const Cart = ({ route }) => {
     } catch (error) {
       console.log(error);
     }
-    // console.log(authToken)
   };
   
   useEffect(()=>{
     retrieveToken();
   },[authToken])
-  
-// console.log(item)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Ionicons name="arrow-back" size={24} color="green" onPress={() => navigation.goBack()} />
         <View style={styles.iconContainer}>
-          <Feather name="search" size={24} color="green" style={styles.icon} />
-          <AntDesign name="sharealt" size={24} color="green" style={styles.icon} />
+        <EvilIcons name="heart" size={24} color="black" />
         </View>
       </View>
       <View style={styles.imageContainer}>
@@ -63,18 +59,6 @@ const Cart = ({ route }) => {
       </View>
       <View style={styles.description}>
       <Text style={{fontFamily:'NotoSansOsmanya'}} >{item.description}</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignContent: 'space-between' }}>
-        <Text style={styles.label}>How many do you want?</Text>
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity  onPress={() => dispatch(decrement(item._id))} style={styles.quantityButton}>
-            <MaterialCommunityIcons name="minus" size={18} color="green" />
-          </TouchableOpacity>
-          <Text style={styles.quantityText}>{quantity}</Text>
-          <TouchableOpacity onPress={() => dispatch(increment({ payload: item._id }))} style={styles.quantityButton}>
-            <MaterialCommunityIcons name="plus" size={18} color="black" />
-          </TouchableOpacity>
-        </View>
       </View>
       <View style={styles.addToCart}>
         <TouchableOpacity
@@ -92,13 +76,14 @@ export default Cart;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 20,
     backgroundColor: 'white',
+   
   },
   header: {
     flexDirection: 'row',
-    marginTop: 40,
+    marginTop: 70,
     alignContent: 'center',
     justifyContent: 'space-between',
   },
@@ -108,7 +93,7 @@ const styles = StyleSheet.create({
 
   },
   imageContainer: {
-    marginTop: 1,
+    marginTop: 13,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -127,15 +112,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    // color:'blue'
+    paddingTop:29
   },
   price: {
     fontSize: 18,
     color: '#4CAF50',
+    paddingTop:20
   },
   description: {
     fontSize: 16,
     marginBottom: 20,
+    paddingTop:20
   },
   label: {
     fontSize: 18,
