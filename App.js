@@ -9,6 +9,7 @@ import Vg from "./Sreens/Vg"
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from "@react-navigation/native";
+import StatsPage from "./Sreens/statistics/indexx"
 
 const slides = [
   {
@@ -80,7 +81,7 @@ const App = () => {
     <>
       <Provider store={Store}>
       
-        <Router />
+        <Router/>
        
       </Provider>
     </>

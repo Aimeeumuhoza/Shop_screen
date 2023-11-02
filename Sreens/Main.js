@@ -78,9 +78,7 @@ const styles = StyleSheet.create({
         width: '40%',
         textAlign: 'center'
     },
-    // image: {
-    //     marginEnd:'auto'
-    // },
+  
     bottomContainer: {
         marginTop: 100,
         backgroundColor: "white",

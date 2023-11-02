@@ -6,12 +6,9 @@ import SignUp from '../Sreens/signUp';
 import Login from '../Sreens/Login';
 import Cart from '../Sreens/Cart';
 import ShopScreen from "../Sreens/n"
-import CategoryScreen from "../Sreens/Vegetable"
-import CartScreen from "../Sreens/CartScreen"
 import UserProfile from "../Sreens/Profile"
-import Payment from "../Sreens/Payment"
+import StatsPage from '../Sreens/statistics/indexx';
 import OnGoing from '../Sreens/Ongoing';
-
 
 const Tab = createBottomTabNavigator()
 const HomeTabNavigator = () => {
@@ -35,8 +32,8 @@ const HomeTabNavigator = () => {
                 title="Home"
             />
             <Tab.Screen
-                name="CategoryScreen"
-                component={CategoryScreen}
+                name="ShopScreen"
+                component={ShopScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Zocial name="cart" size={24} color={color} />
@@ -45,8 +42,8 @@ const HomeTabNavigator = () => {
                 }}
             />
             <Tab.Screen
-                name="ShopScreen"
-                component={ShopScreen}
+                name="My Order"
+                component={OnGoing}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <FontAwesome name="shopping-bag" size={24} color={color} />
@@ -73,17 +70,9 @@ const HomeTabNavigator = () => {
                     headerShown: false
                 }}
             />
-
-            {/* <Tab.Screen
-                name="Payment"
-                component={Payment}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="account" size={24} color={color} />
-                    ),
-                    headerShown: false
-                }}
-            /> */}
+            <Tab.Screen 
+                name="Statistics"
+                component={StatsPage}
         </Tab.Navigator>
     )
 }

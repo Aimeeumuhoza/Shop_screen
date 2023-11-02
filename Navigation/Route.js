@@ -24,7 +24,7 @@ const Router = () => {
     return (
         <NavigationContainer>
             < Stack.Navigator>
-            <Stack.Screen
+                <Stack.Screen
                     name={"Login"}
                     component={Login}
                     options={{
@@ -113,7 +113,7 @@ const Router = () => {
                 />
             </Stack.Navigator>
         </NavigationContainer>
-    )
+    );
 }
 
 export default Router
