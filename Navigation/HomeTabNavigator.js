@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Main from "../Sreens/Main"
-import { FontAwesome, Zocial, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, Zocial, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import SignIn from '../Sreens/signIn';
 import SignUp from '../Sreens/signUp';
 import Login from '../Sreens/Login';
@@ -10,6 +10,8 @@ import CategoryScreen from "../Sreens/Vegetable"
 import CartScreen from "../Sreens/CartScreen"
 import UserProfile from "../Sreens/Profile"
 import Payment from "../Sreens/Payment"
+import OnGoing from '../Sreens/Ongoing';
+
 
 const Tab = createBottomTabNavigator()
 const HomeTabNavigator = () => {
@@ -52,26 +54,36 @@ const HomeTabNavigator = () => {
                     headerShown: false
                 }}
             />
-            <Tab.Screen 
+            <Tab.Screen
+                name={"OnGoing"}
+                component={OnGoing}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <SimpleLineIcons name="bag" size={24} color={color} />
+                    )
+                }}
+            />
+            <Tab.Screen
                 name="UserProfile"
                 component={UserProfile}
                 options={{
-                    tabBarIcon:({color})=>(
+                    tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account" size={24} color={color} />
                     ),
-                    headerShown:false
+                    headerShown: false
                 }}
             />
-            <Tab.Screen 
+
+            {/* <Tab.Screen
                 name="Payment"
                 component={Payment}
                 options={{
-                    tabBarIcon:({color})=>(
+                    tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account" size={24} color={color} />
                     ),
-                    headerShown:false
+                    headerShown: false
                 }}
-            />
+            /> */}
         </Tab.Navigator>
     )
 }

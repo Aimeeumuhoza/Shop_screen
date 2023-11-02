@@ -88,7 +88,7 @@ export default function SignUp() {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> navigation.navigate("Login")}>
                 <AntDesign
                     name="arrowleft"
                     size={24}

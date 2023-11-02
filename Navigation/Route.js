@@ -96,13 +96,14 @@ const Router = () => {
                         headerShown: false
                     }}
                 />
-                   <Stack.Screen
+                   {/* <Stack.Screen
                     name={"OnGoing"}
                     component={OnGoing}
                     options={{
                         headerShown: false
                     }}
-                />
+                /> */}
+
                   <Stack.Screen
                     name={"OrderHistory"}
                     component={OrderHistory}

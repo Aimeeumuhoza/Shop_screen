@@ -3,10 +3,16 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, ScrollView } from '
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
+import ListCategories from './ListCategories';
 
 const OnGoing = () => {
+
     const [cartItems, setCartItems] = useState([]);
     const [token, setToken] = useState("");
+    const [history , setHistory] = useState([])
+    const [label , setLabel] = useState("ongoing")
+    const navigation = useNavigation()
+
 
     useEffect(() => {
         const retrieveToken = async () => {
@@ -14,7 +20,8 @@ const OnGoing = () => {
                 const authToken = await SecureStore.getItemAsync("authToken");
                 if (authToken) {
                     setToken(authToken);
-                    fetchData(authToken);
+                    fetchOnGoing(authToken);
+                    fetchHistory(authToken)
                 }
             } catch (error) {
                 console.log(error);
@@ -24,7 +31,7 @@ const OnGoing = () => {
         retrieveToken();
     }, []);
 
-    const fetchData = async (token) => {
+    const fetchOnGoing = async (token) => {
         try {
             const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart/ongoingorders', {
                 headers: {
@@ -37,52 +44,96 @@ const OnGoing = () => {
         }
     };
 
-    const confirmDelivery = async (orderId) => {
+    const fetchHistory = async (token) => {
         try {
-            const response = await axios.post(`https://grocery-9znl.onrender.com/api/v1/cart/confirmdelivery/${orderId}`, null, {
+            const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart/orderhistory', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data);
+            setHistory(response.data.data);
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    };
+
+    useEffect(() => {
+        switch(label){
+            case 'ongoing':
+                fetchOnGoing(token)
+                break ;
+            case 'history':
+                fetchHistory(token)
+                break;
+            default:
+                fetchOnGoing(token)
+        }  
+
+    },[cartItems, history]) 
+    let all = label === "ongoing" ? cartItems : history
+
+    // console.log("on",all)
+    const confirmDelivery = async (orderId) => {
+        try {
+            const response = await axios.post(
+                `https://grocery-9znl.onrender.com/api/v1/cart/confirmdelivery/${orderId}`,
+                null,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
         } catch (error) {
             console.error('Error confirming delivery:', error);
-
         }
     };
-    const navigation = useNavigation();
+
+    const handleForOngoing = () => {
+        setLabel("ongoing");
+        fetchOnGoing(token); 
+    };
+    
+    const handleHistory = () => {
+        setLabel("history");
+        fetchHistory(token);
+    };
+
+
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.cartTitle}>On Going</Text>
+             <ListCategories handleForOngoing={handleForOngoing} handleHistory={handleHistory} />
             <FlatList
-                data={cartItems}
+                data={all}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                     <View style={styles.cartItem}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={styles.itemName}>location</Text>
-                            <Text style={styles.itemName}>location</Text>
-                            <Text style={styles.itemName}>Price:</Text>
+                        <View style={styles.pending}>
+                            <View style={styles.paddingCard}>
+                                <Text style={styles.textPay}>{item.orderStatus}</Text>
+                            </View>
+                            <View style={styles.date}>
+                                <Text style={styles.textlight}>{item.date}</Text>
+                            </View>
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text style={styles.itemDetails}> {item.transactionId}</Text>
-                            <Text style={styles.itemDetail}>{item.deliveryAddress}</Text>
-                            <Text style={styles.itemDetail}> ${item.totalAmount}</Text>
+                            <Text style={styles.itemName}>transactionId</Text>
+                            <Text style={styles.itemName}>Deliver to</Text>
+                            <Text style={styles.itemName}>Total Payment:</Text>
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <Text > {item.transactionId}</Text>
+                            <Text >{item.deliveryAddress}</Text>
+                            <Text > ${item.totalAmount}</Text>
                         </View>
                         <TouchableOpacity style={styles.addToCartButton} onPress={() => confirmDelivery(item._id)}>
-
-                            <Text  onPress={() => navigation.navigate("OrderHistory")}>Complete</Text>
+                            <Text >Complete</Text>
                         </TouchableOpacity>
 
                     </View>
                 )}
             />
-              {/* <TouchableOpacity style={styles.addToCartButton} onPress={() => confirmDelivery(item._id)}>
-
-<Text  onPress={() => navigation.navigate("OrderHistory")}>Complete</Text>
-</TouchableOpacity> */}
-
         </ScrollView>
     );
 };
@@ -91,7 +142,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        padding: 16,
+        // padding: 16,
     },
     cartTitle: {
         fontSize: 24,
@@ -132,11 +183,6 @@ const styles = StyleSheet.create({
         flexDirection: "row"
 
     },
-    itemDetail: {
-        fontSize: 12,
-        marginBottom: 5,
-        flexDirection: "row"
-    },
     itemDetails: {
         fontSize: 12,
         marginBottom: 5,
@@ -147,6 +193,32 @@ const styles = StyleSheet.create({
         fontSize: 24,
         marginHorizontal: 10,
     },
+    pending: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 20
+    },
+    paddingCard:{
+        backgroundColor: "gray",
+        width:"100",
+        height:24,
+        paddingHorizontal:12,
+        justifyContent:"center",
+        alignItems:"center",
+        marginTop:5,
+        marginBottom:10
+    },
+    date:{
+        marginTop:5,
+        marginBottom:5
+    },
+    textlight:{
+        fontSize: 13,
+        color:"grey"
+    },
+    textPay:{
+        fontSize:15
+    }
 });
 
 

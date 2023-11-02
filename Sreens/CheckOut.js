@@ -8,9 +8,7 @@ const Checkout = ({ route }) => {
   const [data, setData] = useState(null);
   const [token, setToken] = useState("")
 
-  // const totalAmount = route.params.totalPrice;
-
-
+  // const totalAmount = route.params.totalPrice
   const retrieving = async () => {
     try {
       const authToken = await getItemAsync("authToken");
@@ -31,7 +29,6 @@ const Checkout = ({ route }) => {
         console.error("Error retrieving user data:", error);
       }
     };
-
     getUser();
     retrieving()
   }, []);
