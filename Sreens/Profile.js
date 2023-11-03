@@ -109,13 +109,13 @@ const UserProfile = () => {
     await deleteItemAsync("authProfile");
     dispatch(setAuthToken(null));
     dispatch(setAuthStatus(false));
-    dispatch(setAuthProfile(null));
+     dispatch(setAuthProfile(null));
     navigation.navigate("Login");
   };
 
   return (
   
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -193,7 +193,7 @@ const UserProfile = () => {
           <Text style={styles.changeButton}>LOG OUT</Text>
         </Pressable> */}
       </View>
-    </View>
+    </ScrollView>
   )
   
 };

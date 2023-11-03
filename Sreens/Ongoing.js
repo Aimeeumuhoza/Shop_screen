@@ -100,7 +100,7 @@ const OnGoing = () => {
         fetchHistory(token);
     };
 
-
+   
     return (
         <ScrollView style={styles.container}>
              <ListCategories handleForOngoing={handleForOngoing} handleHistory={handleHistory} />
@@ -117,19 +117,32 @@ const OnGoing = () => {
                                 <Text style={styles.textlight}>{item.date}</Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                        <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
                             <Text style={styles.itemName}>transactionId</Text>
                             <Text style={styles.itemName}>Deliver to</Text>
                             <Text style={styles.itemName}>Total Payment:</Text>
                         </View>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <View style={{ flexDirection: "column", justifyContent: "space-between" ,fontSize:"12"}}>
                             <Text > {item.transactionId}</Text>
                             <Text >{item.deliveryAddress}</Text>
                             <Text > ${item.totalAmount}</Text>
                         </View>
-                        <TouchableOpacity style={styles.addToCartButton} onPress={() => confirmDelivery(item._id)}>
+                        </View>
+                        
+                        {/* <TouchableOpacity style={styles.addToCartButton} onPress={() => confirmDelivery(item._id)}>
                             <Text >Complete</Text>
+                        </TouchableOpacity> */} 
+
+                    { item.orderStatus === 'Completed' ? null : (
+                        <TouchableOpacity
+                            style={styles.addToCartButton}
+                            onPress={() => confirmDelivery(item._id)}
+                        >
+                            <Text>Complete</Text>
                         </TouchableOpacity>
+                    )}
+
 
                     </View>
                 )}
@@ -142,7 +155,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        // padding: 16,
     },
     cartTitle: {
         fontSize: 24,
@@ -166,12 +178,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     addToCartButton: {
-        backgroundColor: '#4CAF50',
-        paddingVertical: 15,
-        paddingHorizontal: 20,
+        backgroundColor: '#FDF3E3',
+        paddingVertical: 5,
+        paddingHorizontal: 13,
         borderRadius: 5,
-        marginTop: 20,
+        marginTop: 34,
         alignItems: 'center',
+        justifyContent:'center',
+        width:"50%",
+        marginLeft:63
     },
     buttonText: {
         color: 'white',
@@ -179,7 +194,6 @@ const styles = StyleSheet.create({
     },
     itemName: {
         fontSize: 18,
-        fontWeight: 'bold',
         flexDirection: "row"
 
     },
@@ -199,7 +213,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     paddingCard:{
-        backgroundColor: "gray",
+        backgroundColor: "#FDF3E3",
         width:"100",
         height:24,
         paddingHorizontal:12,
@@ -217,7 +231,8 @@ const styles = StyleSheet.create({
         color:"grey"
     },
     textPay:{
-        fontSize:15
+        fontSize:15,
+        color:'black'
     }
 });
 

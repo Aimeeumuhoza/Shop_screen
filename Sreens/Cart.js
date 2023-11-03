@@ -44,12 +44,6 @@ const Cart = ({ route }) => {
   },[authToken])
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Ionicons name="arrow-back" size={24} color="green" onPress={() => navigation.goBack()} />
-        <View style={styles.iconContainer}>
-        <EvilIcons name="heart" size={24} color="black" />
-        </View>
-      </View>
       <View style={styles.imageContainer}>
         <Image source={{ uri: item.picture }} style={styles.image} />
       </View>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-// import Landing from '../Sreens/Landing'
+import { View, StyleSheet, TextInput } from 'react-native';
 import SignUp from '../Sreens/signUp'
 import { AntDesign } from '@expo/vector-icons';
 import SignIn from '../Sreens/signIn'
@@ -17,6 +17,7 @@ import Payment from "../Sreens/Payment"
 import CheckOut from '../Sreens/CheckOut';
 import OnGoing from '../Sreens/Ongoing';
 import OrderHistory from "../Sreens/Orderhistory"
+import { EvilIcons, Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator()
 
@@ -31,8 +32,8 @@ const Router = () => {
                         headerShown: false
                     }}
                 />
-                
-                  <Stack.Screen
+
+                <Stack.Screen
                     name={'HomeTabNavigator'}
                     component={HomeTabNavigator}
                     options={{
@@ -47,11 +48,26 @@ const Router = () => {
 
                     }}
                 />
-                <Stack.Screen
+                {/* <Stack.Screen
                     name={"CategoryScreen"}
                     component={CategoryScreen}
+                /> */}
+                <Stack.Screen
+                    name="CategoryScreen"
+                    component={CategoryScreen}
+                    options={() => ({
+                        headerTitle: () => (
+                            <View style={styles.header}>
+
+                                <View style={styles.search}>
+                                    <TextInput style={styles.input} placeholder="Search" />
+                                    <EvilIcons name="search" size={30} color="black" />
+                                </View>
+                            </View>
+                        ),
+                    })}
                 />
-              
+
 
                 <Stack.Screen
                     name={"main"}
@@ -60,7 +76,7 @@ const Router = () => {
                         headerShown: false
                     }}
                 />
-                
+
                 <Stack.Screen
                     name={"CartScreen"}
                     component={CartScreen}
@@ -68,43 +84,51 @@ const Router = () => {
                         headerShown: true
                     }}
                 />
-                     <Stack.Screen
+                <Stack.Screen
                     name={"Cart"}
                     component={Cart}
-                    options={{
-                        headerShown: false
-                    }}
+                    options={() => ({
+                        headerTitle: () => (
+
+                            <View style={styles.header}>
+
+                                <View style={{marginLeft:272}}>
+                                    <EvilIcons name="heart" size={24} color="green" />
+                                </View>
+                            </View>
+                        ),
+                    })}
                 />
-                 <Stack.Screen
+                <Stack.Screen
                     name={"CategoriesComponent"}
                     component={CategoriesComponent}
                     options={{
                         headerShown: false
                     }}
                 />
-                  <Stack.Screen
+                <Stack.Screen
                     name={"Payment"}
                     component={Payment}
                     options={{
                         headerShown: false
                     }}
                 />
-                  <Stack.Screen
+                <Stack.Screen
                     name={"CheckOut"}
                     component={CheckOut}
                     options={{
                         headerShown: false
                     }}
                 />
-                   {/* <Stack.Screen
+                <Stack.Screen
                     name={"OnGoing"}
                     component={OnGoing}
                     options={{
                         headerShown: false
                     }}
-                /> */}
+                />
 
-                  <Stack.Screen
+                <Stack.Screen
                     name={"OrderHistory"}
                     component={OrderHistory}
                     options={{
@@ -117,3 +141,30 @@ const Router = () => {
 }
 
 export default Router
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // Add your styles for the screen container
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+    },
+    search: {
+        backgroundColor: 'white',
+        width: '100%',
+        padding: 8,
+        marginLeft: 15,
+        borderRadius: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
+    },
+    input: {
+        flex: 1,
+        marginLeft: 8,
+    },
+});

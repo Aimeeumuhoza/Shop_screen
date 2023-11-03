@@ -18,7 +18,7 @@ import {
 const Tab = createBottomTabNavigator()
 const HomeTabNavigator = () => {
     const { authStatus, authProfile,authLoaded } = useSelector((state) => state.auth);
-    console.log(authProfile.role, "Auth profile");
+    console.log(authProfile?.role, "Auth profile");
 
 
 
@@ -55,7 +55,7 @@ const HomeTabNavigator = () => {
                 tabBarActiveTintColor: 'green',
             }}
         >
-              { authProfile.role !== "manager" ?
+              { authProfile?.role !== "manager" ?
             <>
             <Tab.Screen name="main"
                 component={Main}
@@ -96,7 +96,8 @@ const HomeTabNavigator = () => {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="account" size={24} color={color} />
-                    )
+                    ),
+                    headerShown: false
                 }}
             />
             </>

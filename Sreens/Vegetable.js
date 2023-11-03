@@ -49,13 +49,7 @@ const CategoryScreen = ({ route }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <View style={{flexDirection:"row"}}>
-      <Ionicons name="arrow-back" size={24} color="black" />
-       <View style={styles.Search}>
-                    <TextInput style={styles.input} placeholder="Search" />
-                    <EvilIcons name="search" size={30} color="black" />
-                </View>
-                </View>
+     
       {loading ? (
         <Text>Loading..</Text>
       ) : (
@@ -72,7 +66,7 @@ const CategoryScreen = ({ route }) => {
           )}
         />
       )}
-      <Text>gguuuuu</Text>
+      <Text>Loading...</Text>
     </View>
   );
 };
@@ -90,11 +84,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 8,
     flex: 1,
-    minWidth: '48%', 
+    minWidth: '44%',
+    borderWidth: 1, // Add this property
+    borderColor: 'grey', // Border color
   },
   image: {
     width: '100%',
-    height: 150,
+    height: 170,
     resizeMode: 'cover',
     borderRadius: 1,
   },
@@ -106,8 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'space-between'
-
-},
+  },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -118,6 +113,8 @@ const styles = StyleSheet.create({
     color: '#4CAF50',
   },
 });
+
+
 
 export default CategoryScreen;
 

@@ -57,8 +57,8 @@ const CartScreen = () => {
   const navigation = useNavigation()
   return (
     <View style={styles.container}>
-      <Text style={styles.cartTitle}>Shopping Cart</Text>
-      <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
+      {/* <Text style={styles.cartTitle}>Shopping Cart</Text> */}
+      
       <FlatList
         data={cartItems}
         keyExtractor={(item) => item._id}
@@ -66,8 +66,8 @@ const CartScreen = () => {
           <View style={styles.cartItem}>
             <Image source={{ uri: item.picture }} style={styles.image} />
             <View style={{flexDirection:'column'}}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemName}>Price: ${item.price * item.quantity}</Text>
+            <Text style={styles.itemName}> {item.name}</Text>
+            <Text style={styles.itemName}>  $ {item.price * item.quantity}</Text>
             </View>
             <View style={styles.itemDetails}>
               <TouchableOpacity onPress={() => handleIncrement(item._id, item.quantity)}>
@@ -81,6 +81,7 @@ const CartScreen = () => {
           </View>
         )}
       />
+      <Text style={styles.totalPrice}>Total Price: ${totalPrice}</Text>
            <TouchableOpacity onPress={() => navigation.navigate("ShopScreen")} style={styles.addToCartButton}>
         <Text style={styles.buttonText}>Checkout</Text>
       </TouchableOpacity>
@@ -104,9 +105,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 10,
     flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 1,
-    borderColor: '#ccc',
     justifyContent: 'space-between',
     alignItems: 'center',
   },

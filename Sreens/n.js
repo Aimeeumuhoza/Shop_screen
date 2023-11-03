@@ -96,28 +96,29 @@ const ShopScreen = ({ navigation }) => {
   // console.log("cartId", cartId)
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.cartTitle}>Shopping Cart</Text>
+      <Text style={styles.cartTitle}>Cart</Text>
       <FlatList
         data={cartItems}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.cartItem}>
             <Image style={styles.image} source={{ uri: item.grocery.picture }} />
-            <View style={{}}>
+            <View style={{flexDirection:'column'}}>
               <Text style={styles.itemName}>{item.grocery.name}</Text>
-              <Text style={styles.itemDetail}>Price: ${item.grocery.price * item.count}</Text>
+              <Text style={styles.itemDetail}>$ {item.grocery.price * item.count}</Text>
+              </View>
               <View style={styles.quantity}>
-                <TouchableOpacity onPress={() => handleIncrement(item.grocery._id)}>
+                <TouchableOpacity onPress={() => handleIncrement(item.grocery._id)} style={{marginRight:12}}>
                   {/* <Text style={styles.actionButton}>+</Text> */}
                   <AntDesign name="plussquareo" size={22} color="green" />
                 </TouchableOpacity>
                 <Text style={styles.itemDetail}>{item.count}</Text>
-                <TouchableOpacity onPress={() => handleDecrement(item.grocery._id)}>
+                <TouchableOpacity onPress={() => handleDecrement(item.grocery._id)} style={{marginLeft:12}}>
                   {/* <Text style={styles.actionButton}>-</Text> */}
                   <AntDesign name="minussquareo" size={22} color="green" />
                 </TouchableOpacity>
               </View>
-            </View>
+         
           </View>
         )}
       />
@@ -147,18 +148,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   quantity: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "space-between",
     flexDirection: 'row',
-    marginLeft: 280,
+    marginLeft: 34,
     marginRight: 2,
+    paddingLeft:12,
+    
   },
   cartItem: {
     marginVertical: 10,
-    padding: 3,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: '#ccc',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   addToCartButton: {
     backgroundColor: '#4CAF50',
