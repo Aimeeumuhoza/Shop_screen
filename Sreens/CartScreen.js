@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 10,
     flexDirection: 'row',
-    borderWidth: 12,
-    // borderRadius: 1,
-    // borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 1,
+    borderColor: '#ccc',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -117,11 +117,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   itemDetails: {
-    // flex: 1,
+    flex: 1,
     justifyContent:"space-between",
     flexDirection: 'row', 
     marginLeft: 70, 
-    marginTop:-74
+    marginTop:7
   },
   itemName: {
     fontSize: 18,

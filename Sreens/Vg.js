@@ -1,114 +1,108 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import { Ionicons, AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
-import data from "../assets/Data/data";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Main from "../Sreens/Main"
+import { FontAwesome, Zocial, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
+import SignIn from '../Sreens/signIn';
+import SignUp from '../Sreens/signUp';
+import Login from '../Sreens/Login';
+import Cart from '../Sreens/Cart';
+import ShopScreen from "../Sreens/n"
+import UserProfile from "../Sreens/Profile"
+import StatsPage from '../Sreens/statistics/indexx';
+import OnGoing from '../Sreens/Ongoing';
+import { useEffect, useState } from 'react';
 
-const Vg = ({ fontsLoaded }) => {
+const Tab = createBottomTabNavigator()
+
+const HomeTabNavigator = () => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const storedData = await getItemAsync("authProfile");
+                const parsedData = JSON.parse(storedData);
+                setData(parsedData);
+            } catch (error) {
+                console.error("Error retrieving user data:", error);
+            }
+        };
+
+        getUser();
+    }, []);
+
+    console.log("role",data.data)
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Ionicons name="arrow-back" size={24} color="green" />
-                <Text style={[styles.headerText,{ fontFamily: fontsLoaded ? 'LemonLove' : 'LemonLove' }]} >Vegetable</Text> 
-                <View style={styles.iconContainer}>
-                    <Feather name="search" size={24} color="black" style={styles.icon} />
-                    <AntDesign name="sharealt" size={24} color="black" style={styles.icon} />
-                </View>
-            </View>
-            <View style={styles.header2}>
-                <AntDesign name="filter" size={24} color="black" />
-                <Text> filter</Text>
-                <View style={styles.iconContainer}>
-                    <MaterialCommunityIcons name="sort-reverse-variant" size={24} color="black" />
-                    <Text style={{ fontFamily: "Agbalumo"}}>Sort</Text>
-                </View>
-            </View>
-            <FlatList
-                numColumns={2}
-                data={data}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => (
-                    <View style={styles.cardContainer}>
-                        <View style={styles.card} key={item._id}>
-                            <Image
-                                style={styles.image}
-                                source={item.Image}
-                            />
-                            <Text style={styles.text1}>{item.title}</Text>
-                            <Text style={styles.text}>$ {item.price}</Text>
-                        </View>
-                    </View>
-                )}
-            />
-        </View>
-    );
+        <Tab.Navigator
+            screenOptions={{
+                tabBarActiveTintColor: 'green',
+            }}
+        >
+            {data && data.role == "user" ?
+                <>
+                    <Tab.Screen name="main"
+                        component={Main}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+
+                                <FontAwesome name="shopping-basket" size={24} color={color} />
+
+                            ),
+                            headerShown: false
+                        }}
+
+                        title="Home"
+                    />
+                    <Tab.Screen
+                        name="ShopScreen"
+                        component={ShopScreen}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <Zocial name="cart" size={24} color={color} />
+                            ),
+                            headerShown: false
+                        }}
+                    />
+                    <Tab.Screen
+                        name="My Order"
+                        component={OnGoing}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <FontAwesome name="shopping-bag" size={24} color={color} />
+                            ),
+                            headerShown: false
+                        }}
+                    />
+                    <Tab.Screen
+                        name={"OnGoing"}
+                        component={OnGoing}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <SimpleLineIcons name="bag" size={24} color={color} />
+                            )
+                        }}
+                    />
+                </>
+                :
+                <>
+                    <Tab.Screen
+                        name="UserProfile"
+                        component={UserProfile}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <MaterialCommunityIcons name="account" size={24} color={color} />
+                            ),
+                            headerShown: false
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Statistics"
+                        component={StatsPage}
+                    />
+                </>
+
+            }
+        </Tab.Navigator>
+    )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 50,
-        backgroundColor: 'white',
-        width: '100%',
-        height: "100%",
-      
-    },
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 20,
-        marginTop: -50,
-        marginBottom: 10,
-        padding:43
-    },
-    headerText: {
-        marginLeft: 20,
-        fontSize: 33,
-        fontWeight:'bold',
-        // fontFamily:"LemonLove"
-    },
-    iconContainer: {
-        flexDirection: "row",
-        marginLeft: "auto",
-    },
-    icon: {
-        marginHorizontal: 10,
-    },
-    header2: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 20,
-        marginTop:-34,
-        
-    },
-    cardContainer: {
-        flex: 1,
-        flexDirection: "row",
-    },
-    card: {
-        marginTop: 9,
-        marginBottom: 80,
-        backgroundColor: "white",
-        width: 120,
-        height: 200,
-        marginHorizontal: 12,
-        borderRadius: 15,
-    },
-    // image: {
-    //     width: 100,
-    //     height: 100,
-    //     top: -30,
-    //     marginHorizontal: 40,
-    //     alignSelf: 'center',
-    // },
-    text: {
-        marginLeft: 30,
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    text1: {
-        marginLeft: 30,
-        fontSize: 18,
-    },
-});
-
-export default Vg;
+export default HomeTabNavigator
