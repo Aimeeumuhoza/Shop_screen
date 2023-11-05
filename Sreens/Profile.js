@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
-// const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTM4YWUxYzE4ZTU1YTc4NDA0MzUxNmQiLCJpYXQiOjE2OTgzMjg3MzQsImV4cCI6MTY5ODMzOTUzNH0.GyYY9_FnZtWACW80ZN5nPNs1l59XY9ofrTzkqgzKPpI';
+
 
 const UserProfile = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -74,7 +74,7 @@ const UserProfile = () => {
 
         formData.append("profileImage", {
           uri: result.uri,
-          name: new Date()+'_profile',
+          name: new Date() + '_profile',
           type: type,
         });
       }
@@ -90,8 +90,8 @@ const UserProfile = () => {
           },
         }
       );
-      
-      // );
+
+
 
       console.log("Profile Updated:", response.data);
       setData(response.data);
@@ -109,13 +109,13 @@ const UserProfile = () => {
     await deleteItemAsync("authProfile");
     dispatch(setAuthToken(null));
     dispatch(setAuthStatus(false));
-     dispatch(setAuthProfile(null));
+    dispatch(setAuthProfile(null));
     navigation.navigate("Login");
   };
 
   return (
-  
-    <ScrollView style={styles.container}>
+
+    <View style={styles.container}>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -131,7 +131,7 @@ const UserProfile = () => {
               <Text style={styles.modalText}>Update Profile</Text>
               <View class={styles.imageContainer}>
                 <TouchableOpacity style={styles.imagePicker} >
-                  <FontAwesome name="upload" size={12} color="white" onPress={pickImage}/>
+                  <FontAwesome name="upload" size={12} color="white" onPress={pickImage} />
                 </TouchableOpacity>
               </View>
               <TextInput onChangeText={(email) => setEmail(email)} style={styles.userText} placeholder="email" />
@@ -167,7 +167,7 @@ const UserProfile = () => {
           <Image
             style={styles.image}
             // source={profileImage ? { uri: result.uri } : require("../assets/1.jpg")}
-            source={{uri:data && data.profilePicture}}
+            source={{ uri: data && data.profilePicture }}
           />
 
           <Pressable style={styles.butn} onPress={() => setModalVisible(!modalVisible)}>
@@ -176,12 +176,28 @@ const UserProfile = () => {
         </View>
         <View>
           <Text style={styles.userdata} >persanal Information</Text>
-          <Text style={styles.userdata} >FullName: {data && data.fullName}</Text>
-          <Text style={styles.userdata} >Address: {data && data.location}</Text>
-          <Text style={styles.userdata} >Email: {data && data.email}</Text>
-          <Text style={styles.userdata} >phone: {data && data.phone}</Text>
-          <Text style={styles.userdata} >About</Text>
-          <Text style={styles.userdata} >Help</Text>
+
+          <View style={styles.userDataContainer}>
+            <View style={styles.userDataRow}>
+              <Text style={styles.label}>FullName:</Text>
+              <Text style={styles.userData}>{data && data.fullName}</Text>
+            </View>
+            <View style={styles.userDataRow}>
+              <Text style={styles.label}>Address:</Text>
+              <Text style={styles.userData}>{data && data.location}</Text>
+            </View>
+            <View style={styles.userDataRow}>
+              <Text style={styles.label}>Email:</Text>
+              <Text style={styles.userData}>{data && data.email}</Text>
+            </View>
+            <View style={styles.userDataRow}>
+              <Text style={styles.label}>Phone:</Text>
+              <Text style={styles.userData}>{data && data.phone}</Text>
+            </View>
+          </View>
+
+
+
           <TouchableOpacity onPress={handLogout} style={{ flexDirection: 'row', alignContent: 'space-between' }}>
             <Text>Logout</Text>
             {/* <View style={{ marginLeft: 9 }}>
@@ -193,137 +209,156 @@ const UserProfile = () => {
           <Text style={styles.changeButton}>LOG OUT</Text>
         </Pressable> */}
       </View>
-    </ScrollView>
+    </View>
   )
-  
+
 };
 
 export default UserProfile;
 
 const styles = StyleSheet.create({
   container: {
-        width: "100%",
-        height: "100%",
-        flex: 1
-      },
-      text: {
-        marginTop: 50,
-        marginLeft: 50,
-        marginBottom: 50,
-        color: 'black',
-        fontSize: 20,
-        fontWeight: "bold"
-      },
-      imagePicker: {
-        position: 'absolute',
-        right: 1,
-        bottom: 5,
-        backgroundColor: 'grey',
-        padding: 8,
-        borderRadius: 100,
-        elevation: 20,
-      },
-      imageContainer: {
-        flexDirection: 'row',
-        alignContent: 'flex-end',
-        marginLeft: 6,
-        marginTop:34
-    
-    
-      },
-      image: {
-        width: 100,
-        height: 100,
-        borderRadius: 78,
-        marginBottom: 40
-      },
-      userDetails: {
-        marginTop: 12,
-        marginLeft: 15,
-        flex: 1,
-      },
-      userdata: {
-        marginBottom: 20,
-        fontSize: 18,
-        fontWeight: "bold"
-      },
-      butn: {
-        marginTop: 56,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 1,
-        width: '30%',
-        height: '22%'
-      },
-      changeButton: {
-        color: "green",
-        fontSize: 15,
-        fontWeight: "bold",
-        textAlign: 'center'
-      },
-      imageContainer: {
-    
-      },
-      button: {
-        marginTop: 100,
-        backgroundColor: "grey",
-        borderRadius: 20,
-        padding: 10
-      },
-      centeredView: {
-        marginTop: -3,
-        borderRadius: 30,
-        // height:134
-    
-      },
-      modalView: {
-        margintop: -6,
-        backgroundColor: "lightgreen",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        // flex: 6,
-      },
-      buttonClose: {
-    
-        backgroundColor: "grey",
-        marginTop: 4,
-        backgroundColor: "grey",
-        borderRadius: 20,
-        padding: 10,
-        flexDirection: 'row'
-      },
-      textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        flexDirection: "row"
-      },
-      modalButn: {
-        flexDirection: "row"
-      },
-      userText: {
-        width: "100%",
-        height: 40,
-        margin: 20,
-        borderRadius: 15,
-        backgroundColor: "white",
-        color: "black",
-        paddingLeft: 10,
-        fontSize: 16,
-        fontWeight: "bold"
-      },
-      modalText: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 20,
-        color: "white",
-        marginTop:13
-      }
+    width: "100%",
+    height: "100%",
+    flex: 1
+  },
+  text: {
+    marginTop: 50,
+    marginLeft: 50,
+    marginBottom: 50,
+    color: 'black',
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  imagePicker: {
+    position: 'absolute',
+    right: 1,
+    bottom: 5,
+    backgroundColor: 'grey',
+    padding: 8,
+    borderRadius: 100,
+    elevation: 20,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+    marginLeft: 6,
+    marginTop: 34
+
+
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 78,
+    marginBottom: 40
+  },
+  userDetails: {
+    marginTop: 12,
+    marginLeft: 15,
+    flex: 1,
+  },
+  userdata: {
+    marginBottom: 20,
+    fontSize: 18,
+    fontWeight: "bold"
+  },
+  butn: {
+    marginTop: 56,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 1,
+    width: '30%',
+    height: '22%'
+  },
+  changeButton: {
+    color: "green",
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: 'center'
+  },
+  imageContainer: {
+
+  },
+  button: {
+    marginTop: 100,
+    backgroundColor: "grey",
+    borderRadius: 20,
+    padding: 10
+  },
+  centeredView: {
+    marginTop: -3,
+    borderRadius: 30,
+    // height:134
+
+  },
+  modalView: {
+    margintop: -6,
+    backgroundColor: "lightgreen",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    // flex: 6,
+  },
+  buttonClose: {
+
+    backgroundColor: "grey",
+    marginTop: 4,
+    backgroundColor: "grey",
+    borderRadius: 20,
+    padding: 10,
+    flexDirection: 'row'
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    flexDirection: "row"
+  },
+  modalButn: {
+    flexDirection: "row"
+  },
+  userText: {
+    width: "100%",
+    height: 40,
+    margin: 20,
+    borderRadius: 15,
+    backgroundColor: "white",
+    color: "black",
+    paddingLeft: 10,
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+  modalText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "white",
+    marginTop: 13
+  },
+  userDataContainer: {
+    marginTop: 20,
+},
+userDataRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+    borderBottomWidth:0.2,
+    marginRight:17
+},
+label: {
+    fontSize: 18,
+    fontWeight:"300",
   
+},
+userData: {
+    fontSize: 18,
+    fontWeight:"400",
+},
+
 });
 
 

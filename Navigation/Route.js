@@ -154,10 +154,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     search: {
-        backgroundColor: 'white',
+        backgroundColor: '#F5F5F5',
         width: '100%',
-        padding: 8,
-        marginLeft: 15,
+        padding: 3,
+        marginLeft: 1,
         borderRadius: 5,
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -165,6 +165,6 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        marginLeft: 8,
+        marginLeft: 58,
     },
 });

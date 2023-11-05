@@ -51,9 +51,11 @@ const Cart = ({ route }) => {
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.price}>$ {item.price}</Text>
       </View>
+      <Text style={{fontWeight:'700'}}>product description</Text>
       <View style={styles.description}>
       <Text style={{fontFamily:'NotoSansOsmanya'}} >{item.description}</Text>
       </View>
+      <Text style={{fontWeight:'700'}}>You might like it</Text>
       <View style={styles.addToCart}>
         <TouchableOpacity
           style={styles.addToCartButton}
@@ -106,11 +108,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    paddingTop:29
+    paddingTop:19
   },
   price: {
     fontSize: 18,
-    color: '#4CAF50',
+    color: '#FFB930',
     paddingTop:20
   },
   description: {
@@ -147,7 +149,7 @@ marginTop:-36,
     paddingHorizontal: 20,
     borderRadius: 5,
     width: '100%',
-    marginTop: 100
+    marginTop: 50
 
   },
   addToCartText: {

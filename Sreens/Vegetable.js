@@ -61,12 +61,12 @@ const CategoryScreen = ({ route }) => {
             <TouchableOpacity style={styles.categoryItem} onPress={() => navigation.navigate('Cart', { item: item })}>
               <Image style={styles.image} source={{ uri: item.picture }} />
               <Text style={styles.title}>{item.name}</Text>
-              <Text style={styles.price}>${item.price}</Text>
+              <Text style={styles.price}>$ {item.price}</Text>
             </TouchableOpacity>
           )}
         />
       )}
-      <Text>Loading...</Text>
+      {/* <Text>Loading...</Text> */}
     </View>
   );
 };
@@ -85,13 +85,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     flex: 1,
     minWidth: '44%',
-    borderWidth: 1, // Add this property
-    borderColor: 'grey', // Border color
   },
   image: {
     width: '100%',
     height: 170,
-    resizeMode: 'cover',
+    resizeMode:"contain",
     borderRadius: 1,
   },
   Search: {
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 16,
-    color: '#4CAF50',
+    color: '#FFB930',
   },
 });
 
