@@ -38,7 +38,7 @@ const ShopScreen = ({ navigation }) => {
       }
     };
     fetchData();
-  }, [setCartItems]);
+  }, [cartItems]);
 
   // const fetchData = async (token) => {
   //   try {
