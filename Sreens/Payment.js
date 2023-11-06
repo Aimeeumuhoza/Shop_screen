@@ -70,7 +70,7 @@ export default function Payment({ route }) {
           Authorization: `Bearer ${token}`
         }
       })
-      navigation.navigate('OnGoing',response)
+      navigation.navigate('My Order',response)
   
     } catch (error) {
       console.log(error)

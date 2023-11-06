@@ -23,21 +23,36 @@ const ShopScreen = ({ navigation }) => {
     };
 
     retrieveToken();
-  }, []);
 
-  const fetchData = async (token) => {
-    try {
-      const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setCartItems(response.data.data.items);
-      setCartId(response.data.data._id)
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
-    }
-  };
+    const fetchData = async (token) => {
+      try {
+        const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setCartItems(response.data.data.items);
+        setCartId(response.data.data._id)
+      } catch (error) {
+        // console.error('Error fetching cart items:', error);
+      }
+    };
+    fetchData();
+  }, [setCartItems]);
+
+  // const fetchData = async (token) => {
+  //   try {
+  //     const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart', {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     });
+  //     setCartItems(response.data.data.items);
+  //     setCartId(response.data.data._id)
+  //   } catch (error) {
+  //     console.error('Error fetching cart items:', error);
+  //   }
+  // };
 
   const totalPrice = cartItems.reduce((total, item) => total + item.grocery.price * item.count, 0);
 
@@ -93,7 +108,6 @@ const ShopScreen = ({ navigation }) => {
     }
   };
 
-  // console.log("cartId", cartId)
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.cartTitle}>Cart</Text>

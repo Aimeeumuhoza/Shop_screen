@@ -23,7 +23,7 @@ const Cart = ({ route }) => {
       // addProductTocart(item,dispatch,authToken)
       addProductTocart(item, quantity, dispatch, authToken);
       dispatch(addToCart(item))
-      navigation.navigate('CartScreen', item);
+      navigation.navigate('ShopScreen', item);
     }catch(error){
       console.log(error)
     }

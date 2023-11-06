@@ -12,6 +12,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 const CartScreen = () => {
   const cartItems = useSelector((state) => state.carts.carts);
+  console.log(cartItems)
   const dispatch = useDispatch();
   const totalPrice = calcTotal(cartItems);
   const [authToken, setToken] = useState();
@@ -85,6 +86,11 @@ const CartScreen = () => {
            <TouchableOpacity onPress={() => navigation.navigate("ShopScreen")} style={styles.addToCartButton}>
         <Text style={styles.buttonText}>Checkout</Text>
       </TouchableOpacity>
+       {/* <TouchableOpacity onPress={() =>
+        navigation.navigate("Payment", { totalPrice: totalPrice, cartId: cartId })}
+        style={styles.addToCartButton}>
+        <Text style={styles.buttonText}>Checkout</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };

@@ -18,7 +18,7 @@ import {
 const Tab = createBottomTabNavigator()
 const HomeTabNavigator = () => {
     const { authStatus, authProfile,authLoaded } = useSelector((state) => state.auth);
-    console.log(authProfile?.role, "Auth profile");
+    // console.log(authProfile?.role, "Auth profile");
 
 
 
