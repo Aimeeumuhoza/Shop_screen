@@ -3,11 +3,13 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image, ScrollView }
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { AntDesign } from '@expo/vector-icons'
+import { useIsFocused } from '@react-navigation/core';
 
 const ShopScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
   const [token, setToken] = useState("");
   const [cartId, setCartId] = useState([])
+  const isFocused=useIsFocused()
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -38,21 +40,7 @@ const ShopScreen = ({ navigation }) => {
       }
     };
     fetchData();
-  }, [cartItems]);
-
-  // const fetchData = async (token) => {
-  //   try {
-  //     const response = await axios.get('https://grocery-9znl.onrender.com/api/v1/cart', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     });
-  //     setCartItems(response.data.data.items);
-  //     setCartId(response.data.data._id)
-  //   } catch (error) {
-  //     console.error('Error fetching cart items:', error);
-  //   }
-  // };
+  }, [isFocused,cartItems]);
 
   const totalPrice = cartItems.reduce((total, item) => total + item.grocery.price * item.count, 0);
 
@@ -108,6 +96,9 @@ const ShopScreen = ({ navigation }) => {
     }
   };
 
+  const clearCart = () => {
+    setCartItems([]); 
+  };
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.cartTitle}>Cart</Text>
@@ -140,11 +131,18 @@ const ShopScreen = ({ navigation }) => {
         <Text style={styles.totalLabel}>Total Amount:</Text>
         <Text style={styles.totalAmount}>${totalPrice}</Text>
       </View>
+      {totalPrice === 0 ? (
+        <Text style={styles.emptyCartMessage}>No items in cart</Text>
+      ) : (
+        <>
       <TouchableOpacity onPress={() =>
-        navigation.navigate("Payment", { totalPrice: totalPrice, cartId: cartId })}
+        navigation.navigate("Payment", { totalPrice: totalPrice, cartId: cartId ,clearCart:clearCart})}
         style={styles.addToCartButton}>
         <Text style={styles.buttonText}>Checkout</Text>
       </TouchableOpacity>
+      </>
+      )
+}
     </ScrollView>
   );
 };

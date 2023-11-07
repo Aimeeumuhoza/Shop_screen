@@ -71,7 +71,7 @@ export default function Payment({ route }) {
         }
       })
       navigation.navigate('My Order',response)
-  
+     route.params.clearCart();
     } catch (error) {
       console.log(error)
     }
