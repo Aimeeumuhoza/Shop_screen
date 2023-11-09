@@ -4,6 +4,7 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
 import ListCategories from './ListCategories';
+import Box2 from "../Components/Account"
 
 const OnGoing = () => {
 
@@ -104,6 +105,8 @@ const OnGoing = () => {
     return (
         <ScrollView style={styles.container}>
              <ListCategories handleForOngoing={handleForOngoing} handleHistory={handleHistory} />
+             {cartItems.length === 0 && <Box2 />}
+             {cartItems.length > 0 && (
             <FlatList
                 data={all}
                 keyExtractor={(item) => item._id}
@@ -147,6 +150,8 @@ const OnGoing = () => {
                     </View>
                 )}
             />
+             )
+                    }
         </ScrollView>
     );
 };
@@ -238,3 +243,6 @@ const styles = StyleSheet.create({
 
 
 export default OnGoing;
+
+
+

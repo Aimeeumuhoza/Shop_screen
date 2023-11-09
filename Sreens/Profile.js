@@ -179,20 +179,20 @@ const UserProfile = () => {
 
           <View style={styles.userDataContainer}>
             <View style={styles.userDataRow}>
-              <Text style={styles.label}>FullName:</Text>
+              <Text style={styles.label}>FullName</Text>
               <Text style={styles.userData}>{data && data.fullName}</Text>
             </View>
             <View style={styles.userDataRow}>
-              <Text style={styles.label}>Address:</Text>
+              <Text style={styles.label}>Address</Text>
               <Text style={styles.userData}>{data && data.location}</Text>
             </View>
             <View style={styles.userDataRow}>
-              <Text style={styles.label}>Email:</Text>
+              <Text style={styles.label}>Email</Text>
               <Text style={styles.userData}>{data && data.email}</Text>
             </View>
             <View style={styles.userDataRow}>
-              <Text style={styles.label}>Phone:</Text>
-              <Text style={styles.userData}>{data && data.phone}</Text>
+              <Text style={styles.label}>Phone</Text>
+              <Text style={styles.userData}>078880{data && data.phone}</Text>
             </View>
           </View>
 

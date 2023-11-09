@@ -24,14 +24,14 @@ export default function Login() {
     };
 
 
-    const onSubmit = () => {
-        if (validateForm()) {
-            navigation.navigate('HomeTabNavigator');
-            // handleLogin()
+    // const onSubmit = () => {
+    //     if (validateForm()) {
+    //         // navigation.navigate('HomeTabNavigator');
+    //         // handleLogin()
 
-        }
+    //     }
 
-    }
+    // }
     const validateForm = () => {
         let errors = {};
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,6 +53,10 @@ export default function Login() {
     const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
 
     const handleLogin = async () => {
+
+        if (!validateForm()) {
+            return;
+        }
         setIsLoading(true);
         try {
             const response = await axios.post(`${API_BASE_URL}/auth/login`, {

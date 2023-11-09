@@ -58,7 +58,7 @@ const CategoryScreen = ({ route }) => {
           keyExtractor={(item) => item._id}
           numColumns={2} 
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.categoryItem} onPress={() => navigation.navigate('Cart', { item: item })}>
+            <TouchableOpacity style={styles.categoryItem} onPress={() => navigation.navigate('CartList', { item: item })}>
               <Image style={styles.image} source={{ uri: item.picture }} />
               <Text style={styles.title}>{item.name}</Text>
               <Text style={styles.price}>$ {item.price}</Text>

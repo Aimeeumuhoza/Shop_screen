@@ -6,11 +6,11 @@ import SignUp from '../Sreens/signUp'
 import { AntDesign } from '@expo/vector-icons';
 import SignIn from '../Sreens/signIn'
 import Main from '../Sreens/Main'
-import Cart from '../Sreens/Cart';
+import CartList from '../Sreens/Cart';
 import HomeTabNavigator from './HomeTabNavigator'
 import CartScreen from '../Sreens/CartScreen';
 import Login from '../Sreens/Login';
-import ProductScreen from '../Sreens/ProductScreen'
+import Box2 from '../Components/Account';
 import CategoryScreen from '../Sreens/Vegetable'
 import CategoriesComponent from "../Sreens/Get"
 import Payment from "../Sreens/Payment"
@@ -48,10 +48,6 @@ const Router = () => {
 
                     }}
                 />
-                {/* <Stack.Screen
-                    name={"CategoryScreen"}
-                    component={CategoryScreen}
-                /> */}
                 <Stack.Screen
                     name="CategoryScreen"
                     component={CategoryScreen}
@@ -70,7 +66,7 @@ const Router = () => {
 
 
                 <Stack.Screen
-                    name={"main"}
+                    name={"Shop"}
                     component={Main}
                     options={{
                         headerShown: false
@@ -85,8 +81,8 @@ const Router = () => {
                     }}
                 />
                 <Stack.Screen
-                    name={"Cart"}
-                    component={Cart}
+                    name={"CartList"}
+                    component={CartList}
                     options={() => ({
                         headerTitle: () => (
 
@@ -134,6 +130,11 @@ const Router = () => {
                     options={{
                         headerShown: false
                     }}
+                />
+                <Stack.Screen
+                    name={"Box2"}
+                    component={Box2}
+                    
                 />
             </Stack.Navigator>
         </NavigationContainer>

@@ -57,7 +57,7 @@ const HomeTabNavigator = () => {
         >
               { authProfile?.role !== "manager" ?
             <>
-            <Tab.Screen name="main"
+            <Tab.Screen name="Shop"
                 component={Main}
                 options={{
                     tabBarIcon: ({ color }) => (
@@ -71,7 +71,7 @@ const HomeTabNavigator = () => {
                 title="Home"
             />
             <Tab.Screen
-                name="ShopScreen"
+                name="Cart"
                 component={ShopScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
@@ -91,7 +91,7 @@ const HomeTabNavigator = () => {
                 }}
             />
             <Tab.Screen
-                name={"UserProfile"}
+                name={"Account"}
                 component={UserProfile}
                 options={{
                     tabBarIcon: ({ color }) => (

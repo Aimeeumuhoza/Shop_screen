@@ -4,13 +4,12 @@ import { Ionicons, EvilIcons, AntDesign, MaterialCommunityIcons } from '@expo/ve
 import { useNavigation } from '@react-navigation/native';
 import { addToCart } from '../Redux/action';
 import { useDispatch } from 'react-redux';
-import { increment , decrement} from '../Redux/action';
 import * as SecureStore from 'expo-secure-store';
 import { addProductTocart } from '../Redux/apiCall';
 
 const API_BASE_URL = 'https://grocery-9znl.onrender.com/api/v1';
 
-const Cart = ({ route }) => {
+const CartList = ({ route }) => {
   const { item } = route.params;
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -23,7 +22,7 @@ const Cart = ({ route }) => {
       // addProductTocart(item,dispatch,authToken)
       addProductTocart(item, quantity, dispatch, authToken);
       dispatch(addToCart(item))
-      navigation.navigate('ShopScreen', item);
+      navigation.navigate('Cart', item);
     }catch(error){
       console.log(error)
     }
@@ -68,7 +67,7 @@ const Cart = ({ route }) => {
   );
 };
 
-export default Cart;
+export default CartList;
 
 const styles = StyleSheet.create({
   container: {

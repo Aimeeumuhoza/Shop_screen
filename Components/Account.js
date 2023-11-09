@@ -1,36 +1,58 @@
-import {View,Text,Image} from "react-native";
-import React  from "react";
-import { useDispatch } from "react-redux";
-import {deleteItemAsync} from "expo-secure-store"
-import {setAuthStatus,setLoaded,setAuthProfile,setAuthToken} from "../Redux/AuthSlice"
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { StyleSheet, Text, View,Image,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+// import CategoryScreen from "../Sreens/Vegetable"
+
+export default function Box2() {
+    
+    const navigation = useNavigation()
+    return (
+      <View style={styles.container}>
+          <View style={styles.box}>
+            <Image source={require("../assets/shop.png")} />
+            <Text style={styles.boxText}>You don't have any order yet</Text>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Shop')}>
+                <Text style={{color:'white'}}>Shop now</Text>
+            </TouchableOpacity>
+          </View>
+         
+      </View>
+    );
+  }
+  
+ 
+  
 
 
-const account =()=>{
-    const dispatch =useDispatch();
 
-    const handLogout =()=>{
-        deleteItemAsync('authToken');
-        deleteItemAsync('authProfile');
-        dispatch(setAuthToken(null));
-        dispatch(setAuthStatus(false));
-        dispatch(setAuthProfile(null));
-    };
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:'white',
+   
+  },
 
-    const navigation=useNavigation();
-    const [person,setPerson]=useState({
-        name:'Abera',
-        email:'abera@gmail.com',
-        phone:'0788',
-        profile:require(""),
-        DOB:"02/78"
-    });
+  box: {
+    marginTop:78,
+    padding: 1,
+    height: '59%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '70%', 
+  
+  },
+  button:{
+    backgroundColor:"#08C25E",
+    width:153,
+    height:30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:23
+  }
+});
 
-    return(
- <View style={styles.Container}>
-    <Text>account</Text>
 
- </View>
 
-    )
-}

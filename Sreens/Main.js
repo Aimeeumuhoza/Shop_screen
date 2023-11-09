@@ -20,7 +20,7 @@ export default function Main() {
             </View>
             <View style={styles.banana}>
                 <View style={styles.TextB}>
-                <Text style={{fontFamily:"NotoSansOsmanya"}}>BANANA {'\n'}5% OFF </Text>
+                <Text style={styles.TextB}>BANANA {'\n'}5% OFF </Text>
                 </View>
                 <Image source={require("../assets/banana.png")} style={styles.image} />
             </View>
